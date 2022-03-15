@@ -12,7 +12,7 @@ class Development(Base):
     """ development config """
 
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URI")
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     # SQLALCHEMY_DATABASE_URI = "postgresql:///epilepsy_smart_db"
 
 
@@ -30,7 +30,7 @@ class Production(Base):
     """ production config """
 
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_PROD_URI")
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
 
 
 app_config = {"development": Development,
