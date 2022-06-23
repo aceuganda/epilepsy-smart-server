@@ -190,7 +190,102 @@
             }
           }
         }
-      }
+      },
+      "/seizures/{user_id}": {
+        "get": {
+          "tags": ["seizures"],
+          "summary": "Gets all Seizures per user",
+          "produces": ["application/json"],
+          "parameters":[
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "user_id",
+              "required": true
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully gets Seizures"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
+      "/seizures": {
+        "post": {
+          "tags": ["seizures"],
+          "summary": "Enter a new seizure record",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "Seizure params",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/seizure"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully added seizure record"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
+          }
+        }
+      },
+      "/seizures/{seizure_id}": {
+        "get": {
+          "tags": ["seizure"],
+          "summary": "Gets a single seizure detail",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "seizure_id",
+              "required": true
+            },
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully gets a single Seizure record"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+    }
+      
     },
     "definitions": {
       "user_signup_credentials": {
@@ -235,6 +330,62 @@
           "email": {
             "type": "email",
             "example": "user@email.com"
+          }
+        }
+      },
+      "seizure": {
+        "type": "object",
+        "required": ["user_id", "seizure_severity", "seizure_duration", "seizure_time_of_day", "lost_awareness", "experienced_aura","was_seizure_triggered","seizure_impact","seizure_impact_upset_you" ],
+        "properties": {
+          "user_id": {
+            "type": "number",
+            "example": 1
+          },
+          "seizure_severity": {
+            "type": "string",
+            "example": "mild/moderate/severe"
+          },
+          "seizure_duration": {
+            "type": "string",
+            "example": "2 hrs"
+          }
+          ,
+          "seizure_time_of_day": {
+            "type": "string",
+            "example": "morning/aftenoon/night"
+          }
+          ,
+          "lost_awareness": {
+            "type": "boolean",
+            "example": false
+          },
+          "experienced_aura": {
+            "type": "boolean",
+            "example": true
+          },
+          "aura_kind_experienced": {
+            "type": "string",
+            "example": "sweet smell/Deja-vu"
+          },
+          "aura_location": {
+            "type": "string",
+            "example": "left side"
+          },
+          "was_seizure_triggered": {
+            "type": "boolean",
+            "example": true
+          },
+          "seizure_trigger": {
+            "type": "string",
+            "example": "free text"
+          },
+          "seizure_impact": {
+            "type": "string",
+            "example": "confused/sleepy"
+          },
+          "seizure_impact_upset_you": {
+            "type": "number",
+            "example": 0
           }
         }
       }

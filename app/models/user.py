@@ -17,6 +17,7 @@ class User(RootModel):
     username = db.Column(db.String(256), nullable=False, default="")
     password = db.Column(db.String(256), nullable=False, default="")
     date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
+    seizures = db.relationship('Seizure', backref='owner', lazy=True)
 
     def __init__(self, username, email, password):
         """ initialize with email, username and password """
