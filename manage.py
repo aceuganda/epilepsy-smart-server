@@ -6,6 +6,8 @@ from server import app
 # import models
 from app.models.user import User
 from app.models.seizure import Seizure
+from app.models.medication import Medication
+from app.models.medicine import Medicine
 
 
 # register app and db with migration class

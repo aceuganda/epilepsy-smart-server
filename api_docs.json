@@ -284,8 +284,131 @@
             }
           }
         }
-    }
-      
+    },
+    "/medications": {
+      "post": {
+        "tags": ["medication_records"],
+        "summary": "Enter a new medication record",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Medication params",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/medication"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully added medication record"
+          },
+          "401": {
+            "description": "invalid input, object invalid"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/medications/{medication_id}": {
+      "get": {
+        "tags": ["medication_records"],
+        "summary": "Gets a single medication record's detail",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "medication_id",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully gets a single medication record"
+          },
+          "401": {
+            "description": "invalid input, object invalid"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }},
+      "/medicines": {
+        "post": {
+          "tags": ["medicine"],
+          "summary": "Enter a new medicine record",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "Medicine params",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/medicine"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully added medicine record"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
+          }
+        }
+      },
+      "/medicines/{medicine_id}": {
+        "get": {
+          "tags": ["medicine"],
+          "summary": "Gets a single medicine detail",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "medicine_id",
+              "required": true
+            },
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully gets a single Seizure record"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }}
     },
     "definitions": {
       "user_signup_credentials": {
@@ -388,7 +511,50 @@
             "example": 0
           }
         }
-      }
+      },
+      "medication": {
+        "type": "object",
+        "required": ["user_id", "medicine_id", "took_medicine", "experienced_side_effects"],
+        "properties": {
+          "user_id": {
+            "type": "number",
+            "example": 1
+          },
+          "medicine_id": {
+            "type": "number",
+            "example": 1
+          },
+          "took_medicine": {
+            "type": "string",
+            "example": "all doses/some doses/no doses"
+          },
+          "medicine_name": {
+            "type": "string",
+            "example": "panadol"
+          },
+          "experienced_side_effects": {
+            "type": "boolean",
+            "example": false
+          },
+          "side_effects_experienced": {
+            "type": "string",
+            "example": "Dizziness"
+          }
+        }
+      },
+      "medicine": {
+        "type": "object",
+        "required": ["user_id", "name"],
+        "properties": {
+          "user_id": {
+            "type": "number",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "panadol"
+          }
+        }
+
     }
-  }
-  
+  }}

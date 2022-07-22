@@ -5,7 +5,8 @@ from flask_jwt_extended import create_access_token
 from ..models import db
 from app.models.root_model import RootModel
 
-
+from app.models.seizure import Seizure
+from app.models.medicine import Medicine
 class User(RootModel):
     """ user table definition """
 
@@ -17,7 +18,8 @@ class User(RootModel):
     username = db.Column(db.String(256), nullable=False, default="")
     password = db.Column(db.String(256), nullable=False, default="")
     date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
-    seizures = db.relationship('Seizure', backref='owner', lazy=True)
+    seizures = db.relationship('Seizure', backref='user', lazy=True)
+    medicines =db.relationship('Medicine', backref='user', lazy=True)
 
     def __init__(self, username, email, password):
         """ initialize with email, username and password """

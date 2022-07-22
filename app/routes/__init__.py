@@ -1,6 +1,6 @@
 from flask_restful import Api
 from app.controllers import (
-    IndexView, UserView, UserDetailView, UserLoginView, ResetPassword, SiezureView, SeizureDetailView)
+    IndexView, UserView, UserDetailView, UserLoginView, ResetPassword, SiezureView, SeizureDetailView, MedicationView, MedicationDetailView, MedicineView, MedicineDetailView)
 
 
 api = Api()
@@ -20,3 +20,13 @@ api.add_resource(ResetPassword, '/users/reset_password',
 api.add_resource(SiezureView, '/seizures', endpoint='seizures')
 api.add_resource(SiezureView, '/seizures/<string:user_id>')
 api.add_resource(SeizureDetailView, '/seizures/<string:seizure_id>', endpoint='seizure')
+
+#Medicine routes
+api.add_resource(MedicineView, '/medicines', endpoint='medicine')
+api.add_resource(MedicineView, '/medicines/<string:user_id>')
+api.add_resource(MedicineDetailView, '/medicines/<string:medicine_id>')
+
+#Medication routes
+api.add_resource(MedicationView, '/medications', endpoint='medication_records')
+api.add_resource(MedicationView, '/medications/<string:user_id>')
+api.add_resource(MedicationDetailView, '/medications/<string:medication_id>')
