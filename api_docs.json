@@ -408,7 +408,101 @@
               "description": "Server error"
             }
           }
-        }}
+        }},
+        "/resilience/{user_id}": {
+          "get": {
+            "tags": ["resilience_tracking"],
+            "summary": "Gets all resilience records per user",
+            "produces": ["application/json"],
+            "parameters":[
+              {
+                "in": "header",
+                "name": "Authorization",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "in": "path",
+                "name": "user_id",
+                "required": true
+              }
+            ],
+            "responses": {
+              "201": {
+                "description": "Successfully gets Resilience records"
+              },
+              "401": {
+                "description": "invalid input, object invalid"
+              },
+              "500": {
+                "description": "Server error"
+              }
+            }
+          }
+        },
+        "/resilience": {
+          "post": {
+            "tags": ["resilience_tracking"],
+            "summary": "Enter a new resilience record",
+            "consumes": ["application/json"],
+            "produces": ["application/json"],
+            "parameters": [
+              {
+                "in": "body",
+                "name": "Resilience params",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/resilience"
+                }
+              }
+            ],
+            "responses": {
+              "201": {
+                "description": "Successfully added resilience record"
+              },
+              "401": {
+                "description": "invalid input, object invalid"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            }
+          }
+        },
+        "/resilience/{resilience_id}": {
+          "get": {
+            "tags": ["resilience_tracking"],
+            "summary": "Gets a single resilience record detail",
+            "produces": ["application/json"],
+            "parameters": [
+              {
+                "in": "path",
+                "name": "resilience_id",
+                "required": true
+              },
+              {
+                "in": "header",
+                "name": "Authorization",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "201": {
+                "description": "Successfully gets a single Resilience record"
+              },
+              "401": {
+                "description": "invalid input, object invalid"
+              },
+              "404": {
+                "description": "Resource not found"
+              },
+              "500": {
+                "description": "Server error"
+              }
+            }
+          }
+      }
     },
     "definitions": {
       "user_signup_credentials": {
@@ -505,6 +599,42 @@
           "seizure_impact_upset_you": {
             "type": "number",
             "example": 0
+          }
+        }
+      },
+      "resilience": {
+        "type": "object",
+        "required": ["user_id", "treatment_scale_by_other", "engaged_socially_today","type_of_feelings","feelings_experienced","reason_for_feelings"],
+        "properties": {
+          "user_id": {
+            "type": "number",
+            "example": 1
+          },
+          "treatment_scale_by_other": {
+            "type": "number",
+            "example": 0
+          },
+          "engaged_socially_today": {
+            "type": "boolean",
+            "example": true
+          },
+          "engagement_activities": {
+            "type": "string",
+            "example": "School, Family Visits"
+          }
+          ,
+          "type_of_feelings": {
+            "type": "string",
+            "example": "Positive/Negative"
+          }
+          ,
+          "feelings_experienced": {
+            "type": "string",
+            "example": "happy, grateful, joyful"
+          },
+          "reason_for_feelings": {
+            "type": "string",
+            "example": "Acomplished goals"
           }
         }
       },

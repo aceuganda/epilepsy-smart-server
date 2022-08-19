@@ -8,6 +8,7 @@ from app.models.user import User
 from app.models.seizure import Seizure
 from app.models.medication import Medication
 from app.models.medicine import Medicine
+from app.models.resilience import Resilience
 
 
 # register app and db with migration class
