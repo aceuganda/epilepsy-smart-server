@@ -11,7 +11,6 @@ class SeizureSchema(Schema):
     seizure_time_of_day = fields.String()
     lost_awareness = fields.Boolean()
     experienced_aura = fields.Boolean()
-    aura_location = fields.String()
     aura_kind_experienced = fields.String()
     was_seizure_triggered = fields.Boolean()
     seizure_trigger = fields.String()

@@ -17,7 +17,6 @@ class Seizure(RootModel):
     seizure_time_of_day = db.Column(db.String(256), nullable=False)
     lost_awareness = db.Column(db.Boolean(256), nullable=False)
     experienced_aura = db.Column(db.Boolean, nullable=False)
-    aura_location = db.Column(db.String(256), nullable=True)
     aura_kind_experienced = db.Column(db.String(256), nullable=True)
     was_seizure_triggered = db.Column(db.Boolean, nullable=False)
     seizure_trigger = db.Column(db.String(256),nullable=True)
