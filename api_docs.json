@@ -490,10 +490,6 @@
             "type": "string",
             "example": "sweet smell/Deja-vu"
           },
-          "aura_location": {
-            "type": "string",
-            "example": "left side"
-          },
           "was_seizure_triggered": {
             "type": "boolean",
             "example": true
