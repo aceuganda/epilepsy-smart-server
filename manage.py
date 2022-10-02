@@ -9,7 +9,8 @@ from app.models.seizure import Seizure
 from app.models.medication import Medication
 from app.models.medicine import Medicine
 from app.models.resilience import Resilience
-
+from app.models.feelings import Feeling
+from app.models.activities import Activity
 
 # register app and db with migration class
 migrate = Migrate(app, db)

@@ -620,7 +620,7 @@
           },
           "engagement_activities": {
             "type": "string",
-            "example": "School, Family Visits"
+            "example": ["School", "Family Visits"]
           }
           ,
           "type_of_feelings": {
@@ -630,7 +630,7 @@
           ,
           "feelings_experienced": {
             "type": "string",
-            "example": "happy, grateful, joyful"
+            "example": ["happy", "grateful", "joyful"]
           },
           "reason_for_feelings": {
             "type": "string",
