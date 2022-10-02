@@ -25,12 +25,16 @@
             }
           ],
           "responses": {
-            "201": {
+            "200": {
               "description": "Successfully gets Users"
             },
             "401": {
               "description": "invalid input, object invalid"
             },
+            "404": {
+              "description": "Resource not found"
+            }
+            ,
             "500": {
               "description": "Server error"
             }
@@ -77,7 +81,7 @@
             }
           ],
           "responses": {
-            "201": {
+            "200": {
               "description": "Successfully gets a single User"
             },
             "401": {
@@ -210,12 +214,16 @@
             }
           ],
           "responses": {
-            "201": {
+            "200": {
               "description": "Successfully gets Seizures"
             },
             "401": {
               "description": "invalid input, object invalid"
             },
+            "404": {
+              "description": "Resource not found"
+            }
+            ,
             "500": {
               "description": "Server error"
             }
@@ -270,7 +278,7 @@
             }
           ],
           "responses": {
-            "201": {
+            "200": {
               "description": "Successfully gets a single Seizure record"
             },
             "401": {
@@ -428,11 +436,14 @@
               }
             ],
             "responses": {
-              "201": {
+              "200": {
                 "description": "Successfully gets Resilience records"
               },
               "401": {
                 "description": "invalid input, object invalid"
+              },
+              "404": {
+                "description": "Resource not found"
               },
               "500": {
                 "description": "Server error"
@@ -488,7 +499,7 @@
               }
             ],
             "responses": {
-              "201": {
+              "200": {
                 "description": "Successfully gets a single Resilience record"
               },
               "401": {
