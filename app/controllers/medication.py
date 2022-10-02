@@ -41,6 +41,11 @@ class MedicationView(Resource):
         medication_schema = MedicationSchema(many=True)
 
         medications = Medication.find_all(user_id=user_id)
+        if not medications:
+            return dict(
+                status='fail',
+                message=f'No Medication data found'
+            ), 404
 
         medications_data, errors = medication_schema.dumps(medications)
 

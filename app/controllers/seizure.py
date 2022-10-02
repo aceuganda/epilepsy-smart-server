@@ -41,6 +41,11 @@ class SiezureView(Resource):
         seizure_schema = SeizureSchema(many=True)
 
         seizures = Seizure.find_all(user_id=user_id)
+        if not seizures:
+            return dict(
+                status='fail',
+                message=f'No seizure data found' 
+            ), 404
 
         seizures_data, errors = seizure_schema.dumps(seizures)
 

@@ -1,6 +1,7 @@
 from flask_restful import Api
 from app.controllers import (
-    IndexView, UserView, UserDetailView, UserLoginView, ResetPassword, SiezureView, SeizureDetailView, MedicationView, MedicationDetailView, MedicineView, MedicineDetailView)
+    IndexView, UserView, UserDetailView, UserLoginView, ResetPassword, SiezureView, SeizureDetailView, MedicationView, MedicationDetailView, MedicineView, MedicineDetailView
+    , ResilienceView, ResilienceDetailView)
 
 
 api = Api()
@@ -30,3 +31,8 @@ api.add_resource(MedicineDetailView, '/medicines/<string:medicine_id>')
 api.add_resource(MedicationView, '/medications', endpoint='medication_records')
 api.add_resource(MedicationView, '/medications/<string:user_id>')
 api.add_resource(MedicationDetailView, '/medications/<string:medication_id>')
+
+#Resilience routes
+api.add_resource(ResilienceView, '/resilience', endpoint='resilience_tracking')
+api.add_resource(ResilienceView, '/resilience/<string:user_id>')
+api.add_resource(ResilienceDetailView, '/seizures/<string:resilience_id>')

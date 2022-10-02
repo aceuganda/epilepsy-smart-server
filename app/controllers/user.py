@@ -47,6 +47,11 @@ class UserView(Resource):
         user_schema = UserSchema(many=True)
 
         users = User.find_all()
+        if not users:
+            return dict(
+                status='fail',
+                message=f'No user data found'
+            ), 404
 
         users_data, errors = user_schema.dumps(users)
 
