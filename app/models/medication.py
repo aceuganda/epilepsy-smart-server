@@ -14,6 +14,7 @@ class Medication(RootModel):
     took_medicine = db.Column(db.String(256), nullable=False)
     medicine_name = db.Column(db.String(256), nullable=True)
     reason_missed_dose = db.Column(db.String(255), nullable=True)
+    experienced_side_effects = db.Column(db.Boolean, nullable=False, default=False)
     side_effects_experienced = db.Column(db.String(255), nullable=True)
     timestamp = db.Column(db.DateTime, default=db.func.current_timestamp())
 
