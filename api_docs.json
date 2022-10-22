@@ -322,7 +322,7 @@
         }
       }
     },
-    "medications/{user_id}": {
+    "/medications/{user_id}": {
       "get": {
         "tags": ["medication_records"],
         "summary": "Get medication records for single user",
