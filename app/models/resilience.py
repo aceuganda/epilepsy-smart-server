@@ -11,7 +11,7 @@ class Resilience(RootModel):
 
     # fields of the user table
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     treatment_scale_by_other = db.Column(db.Integer, nullable=False)
     engaged_socially_today = db.Column(db.Boolean(256), nullable=False)
     engagement_activities = db.Column(JSON, nullable=True)

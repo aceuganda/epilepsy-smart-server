@@ -589,7 +589,7 @@
     "definitions": {
       "user_signup_credentials": {
         "type": "object",
-        "required": ["username", "password", "email"],
+        "required": ["username", "password", "email", "age", "gender", "age_of_onset", "seizure_type", "caregiver_name", "caregiver_contact", "institution"],
         "properties": {
           "username": {
             "type": "string",
@@ -602,6 +602,34 @@
           "password": {
             "type": "string",
             "example": "password"
+          },
+          "age": {
+            "type": "number",
+            "example": 20
+          },
+          "gender": {
+            "type": "string",
+            "example": "male/female"
+          },
+          "age_of_onset": {
+            "type": "integer",
+            "example": 13
+          },
+          "seizure_type": {
+            "type": "string",
+            "example": "Tonic/Atonic/MyoClonic/Clonic"
+          },
+          "caregiver_name": {
+            "type": "string",
+            "example": "Justin Beiber"
+          },
+          "caregiver_contact": {
+            "type": "string",
+            "example": "0700123456"
+          },
+          "institution": {
+            "type": "string",
+            "example": "Makerere Univerity"
           }
         }
       },

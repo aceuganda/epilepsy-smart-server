@@ -11,7 +11,7 @@ class Seizure(RootModel):
 
     # fields of the user table
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     seizure_severity = db.Column(db.String(256), nullable=False)
     seizure_duration = db.Column(db.String(256), nullable=False)
     seizure_time_of_day = db.Column(db.String(256), nullable=False)

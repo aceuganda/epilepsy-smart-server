@@ -20,7 +20,7 @@ api.add_resource(ResetPassword, '/users/reset_password',
 #Seizure routes
 api.add_resource(SiezureView, '/seizures', endpoint='seizures')
 api.add_resource(SiezureView, '/seizures/<string:user_id>')
-api.add_resource(SeizureDetailView, '/seizures/<string:seizure_id>', endpoint='seizure')
+api.add_resource(SeizureDetailView, '/seizures/<string:seizure_id>')
 
 #Medicine routes
 api.add_resource(MedicineView, '/medicines', endpoint='medicine')
@@ -35,4 +35,4 @@ api.add_resource(MedicationDetailView, '/medications/<string:medication_id>')
 #Resilience routes
 api.add_resource(ResilienceView, '/resilience', endpoint='resilience_tracking')
 api.add_resource(ResilienceView, '/resilience/<string:user_id>')
-api.add_resource(ResilienceDetailView, '/seizures/<string:resilience_id>')
+api.add_resource(ResilienceDetailView, '/resilience/<string:resilience_id>')
