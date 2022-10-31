@@ -259,7 +259,7 @@
           }
         }
       },
-      "/seizures/{seizure_id}": {
+      "/seizure/{seizure_id}": {
         "get": {
           "tags": ["seizures"],
           "summary": "Gets a single seizure detail",
@@ -357,7 +357,7 @@
       }
     }
     ,
-    "/medications/{medication_id}": {
+    "/medication/{medication_id}": {
       "get": {
         "tags": ["medication_records"],
         "summary": "Gets a single medication record's detail",
@@ -455,7 +455,7 @@
         }
       }
       ,
-      "/medicines/{medicine_id}": {
+      "/medicine/{medicine_id}": {
         "get": {
           "tags": ["medicine"],
           "summary": "Gets a single medicine detail",
@@ -488,7 +488,7 @@
             }
           }
         }},
-        "/resilience/{user_id}": {
+        "/resiliences/{user_id}": {
           "get": {
             "tags": ["resilience_tracking"],
             "summary": "Gets all resilience records per user",
