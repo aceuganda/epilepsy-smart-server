@@ -23,14 +23,14 @@ class User(RootModel):
     caregiver_name = db.Column(db.String(256), nullable=True)
     caregiver_contact = db.Column(db.String(256), nullable=True)
     institution = db.Column(db.String(256), nullable=True)
-    profile_picture = db.Column(db.LargeBinary(), nullable=True)
+    profileImage = db.Column(db.LargeBinary(), nullable=True)
     password = db.Column(db.String(256), nullable=False, default="")
     date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
     seizures = db.relationship('Seizure', backref='user', lazy=True)
     medicines =db.relationship('Medicine', backref='user', lazy=True)
 
-    def __init__(self, username, email, age, gender, age_of_onset, seizure_type, caregiver_name, caregiver_contact, institution, password):
-        """ initialize with email, age, gender, age_of_onset, seizure_type, caregiver_name, caregiver_contact, institution ,username and password """
+    def __init__(self, username, email, age, gender, age_of_onset, seizure_type, caregiver_name, caregiver_contact, institution, profileImage, password):
+        """ initialize with email, age, gender, age_of_onset, seizure_type, caregiver_name, caregiver_contact, institution, profileImage, username and password """
         self.email = email
         self.username = username
         self.age = age
@@ -40,6 +40,7 @@ class User(RootModel):
         self.caregiver_name = caregiver_name
         self.caregiver_contact = caregiver_contact
         self.institution = institution
+        self.profileImage = profileImage
         self.password = Bcrypt().generate_password_hash(password).decode()
 
     # to be used on login

@@ -630,6 +630,10 @@
           "institution": {
             "type": "string",
             "example": "Makerere Univerity"
+          },
+          "profileImage": {
+            "type": "string",
+            "example": ""
           }
         }
       },
