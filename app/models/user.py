@@ -23,7 +23,7 @@ class User(RootModel):
     caregiver_name = db.Column(db.String(256), nullable=True)
     caregiver_contact = db.Column(db.String(256), nullable=True)
     institution = db.Column(db.String(256), nullable=True)
-    # profile_picture
+    profile_picture = db.Column(db.LargeBinary(), nullable=True)
     password = db.Column(db.String(256), nullable=False, default="")
     date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
     seizures = db.relationship('Seizure', backref='user', lazy=True)

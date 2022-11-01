@@ -20,7 +20,7 @@ api.add_resource(ResetPassword, '/users/reset_password',
 #Seizure routes
 api.add_resource(SiezureView, '/seizures', endpoint='seizures')
 api.add_resource(SiezureView, '/seizures/<string:user_id>')
-api.add_resource(SeizureDetailView, '/seizure/<string:seizure_id>')
+api.add_resource(SeizureDetailView, '/seizure/<string:seizure_id>', endpoint='seizure')
 
 #Medicine routes
 api.add_resource(MedicineView, '/medicines', endpoint='medicine')
