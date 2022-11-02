@@ -589,7 +589,7 @@
     "definitions": {
       "user_signup_credentials": {
         "type": "object",
-        "required": ["username", "password", "email", "age", "gender", "age_of_onset", "seizure_type", "caregiver_name", "caregiver_contact", "institution"],
+        "required": ["username", "password", "email", "age", "gender", "age_of_onset", "seizure_type", "caregiver_name", "caregiver_contact", "institution", "profileImage"],
         "properties": {
           "username": {
             "type": "string",

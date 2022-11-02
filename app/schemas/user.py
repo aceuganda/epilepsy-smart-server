@@ -13,6 +13,7 @@ class UserSchema(Schema):
     caregiver_name = fields.String()
     caregiver_contact = fields.String()
     institution = fields.String()
+    profileImage = fields.String()
     password = fields.String(load_only=True)
 
 
