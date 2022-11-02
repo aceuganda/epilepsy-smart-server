@@ -259,7 +259,7 @@
           }
         }
       },
-      "/seizures/{seizure_id}": {
+      "/seizure/{seizure_id}": {
         "get": {
           "tags": ["seizures"],
           "summary": "Gets a single seizure detail",
@@ -357,7 +357,7 @@
       }
     }
     ,
-    "/medications/{medication_id}": {
+    "/medication/{medication_id}": {
       "get": {
         "tags": ["medication_records"],
         "summary": "Gets a single medication record's detail",
@@ -455,7 +455,7 @@
         }
       }
       ,
-      "/medicines/{medicine_id}": {
+      "/medicine/{medicine_id}": {
         "get": {
           "tags": ["medicine"],
           "summary": "Gets a single medicine detail",
@@ -488,7 +488,7 @@
             }
           }
         }},
-        "/resilience/{user_id}": {
+        "/resiliences/{user_id}": {
           "get": {
             "tags": ["resilience_tracking"],
             "summary": "Gets all resilience records per user",
@@ -589,7 +589,7 @@
     "definitions": {
       "user_signup_credentials": {
         "type": "object",
-        "required": ["username", "password", "email"],
+        "required": ["username", "password", "email", "age", "gender", "age_of_onset", "seizure_type", "caregiver_name", "caregiver_contact", "institution", "profileImage"],
         "properties": {
           "username": {
             "type": "string",
@@ -602,6 +602,38 @@
           "password": {
             "type": "string",
             "example": "password"
+          },
+          "age": {
+            "type": "number",
+            "example": 20
+          },
+          "gender": {
+            "type": "string",
+            "example": "male/female"
+          },
+          "age_of_onset": {
+            "type": "integer",
+            "example": 13
+          },
+          "seizure_type": {
+            "type": "string",
+            "example": "Tonic/Atonic/MyoClonic/Clonic"
+          },
+          "caregiver_name": {
+            "type": "string",
+            "example": "Justin Beiber"
+          },
+          "caregiver_contact": {
+            "type": "string",
+            "example": "0700123456"
+          },
+          "institution": {
+            "type": "string",
+            "example": "Makerere Univerity"
+          },
+          "profileImage": {
+            "type": "string",
+            "example": ""
           }
         }
       },
