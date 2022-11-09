@@ -5,7 +5,7 @@ from app.schemas import UserSchema, UserLoginSchema
 from app.models.user import User
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_bcrypt import Bcrypt
-
+from app.models.role import Role 
 
 class UserView(Resource):
 
@@ -29,6 +29,12 @@ class UserView(Resource):
                         message=f'User email {validated_user_data["email"]} already exists'), 409
 
         user = User(**validated_user_data)
+
+        # get the customer role
+        user_role = Role.find_first(name='app_user')
+        
+        if user_role:
+            user.roles.append(user_role)
 
         saved_user = user.save()
 
