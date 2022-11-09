@@ -11,6 +11,8 @@ from app.models.medicine import Medicine
 from app.models.resilience import Resilience
 from app.models.feelings import Feeling
 from app.models.activities import Activity
+from app.models.role import Role
+from app.models.user_role import UserRole
 
 # register app and db with migration class
 migrate = Migrate(app, db)
