@@ -37,8 +37,7 @@ def create_superuser(email, password, confirm_password):
             print(f'email {email} already in use')
             return
 
-        admin_user = User(email=email, name='admin', password=password)
-        admin_user.verified = True
+        admin_user = User(email=email, username='super_admin', password=password)
         admin_user.roles.append(admin_role)
         admin_user.save()
         print("Admin user created successfully")

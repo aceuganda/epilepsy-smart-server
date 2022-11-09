@@ -29,18 +29,18 @@ class User(RootModel):
     seizures = db.relationship('Seizure', backref='user', lazy=True)
     medicines =db.relationship('Medicine', backref='user', lazy=True)
 
-    def __init__(self, username, email, age, gender, age_of_onset, seizure_type, caregiver_name, caregiver_contact, institution, profileImage, password):
-        """ initialize with email, age, gender, age_of_onset, seizure_type, caregiver_name, caregiver_contact, institution, profileImage, username and password """
+    def __init__(self, username, email, password):
+        """ initialize with email, username and password """
         self.email = email
         self.username = username
-        self.age = age
-        self.gender= gender
-        self.age_of_onset = age_of_onset
-        self.seizure_type = seizure_type
-        self.caregiver_name = caregiver_name
-        self.caregiver_contact = caregiver_contact
-        self.institution = institution
-        self.profileImage = profileImage
+        # self.age = age
+        # self.gender= gender
+        # self.age_of_onset = age_of_onset
+        # self.seizure_type = seizure_type
+        # self.caregiver_name = caregiver_name
+        # self.caregiver_contact = caregiver_contact
+        # self.institution = institution
+        # self.profileImage = profileImage
         self.password = Bcrypt().generate_password_hash(password).decode()
 
     # to be used on login
