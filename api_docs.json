@@ -154,7 +154,7 @@
             }
           ],
           "responses": {
-            "201": {
+            "200": {
               "description": "Successfully Logged In User"
             },
             "401": {
@@ -621,6 +621,12 @@
           "produces": ["application/json"],
           "parameters": [
             {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
               "in": "body",
               "name": "Role params",
               "required": true,
@@ -650,6 +656,12 @@
           "produces": ["application/json"],
           "parameters": [
             {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
               "in": "path",
               "name": "role_id",
               "required": true
@@ -672,7 +684,7 @@
         },
         "patch": {
           "tags": ["roles_detail"],
-          "summary": "Updates user info",
+          "summary": "Updates roles info",
           "consumes": ["application/json"],
           "produces": ["application/json"],
           "parameters": [
@@ -717,6 +729,12 @@
           "produces": ["application/json"],
           "parameters": [
             {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
               "in": "path",
               "name": "role_id",
               "required": true
@@ -745,6 +763,12 @@
           "summary": "add a user role",
           "produces": ["application/json"],
           "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
             {
               "in": "path",
               "name": "user_id",
@@ -780,6 +804,12 @@
           "produces": ["application/json"],
           "parameters": [
             {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
               "in": "path",
               "name": "user_id",
               "required": true
@@ -806,6 +836,12 @@
           "consumes": ["application/json"],
           "produces": ["application/json"],
           "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
             {
               "in": "header",
               "name": "Authorization",
@@ -846,6 +882,12 @@
           "summary": "Delete a user role",
           "produces": ["application/json"],
           "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
             {
               "in": "path",
               "name": "user_id",
