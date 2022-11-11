@@ -53,8 +53,9 @@ class User(RootModel):
         """ generates the access token """
         # set token expiry period
         expiry = timedelta(days=10)
+        roles = user["roles"]
 
-        return create_access_token(user, expires_delta=expiry)
+        return create_access_token(user, expires_delta=expiry, user_claims=dict({"roles":roles}))
 
     def __repr__(self):
         return "<User: {}>".format(self.email)

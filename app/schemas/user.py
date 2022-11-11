@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields
-
+from .role import RoleSchema
 
 class UserSchema(Schema):
 
@@ -15,6 +15,7 @@ class UserSchema(Schema):
     institution = fields.String()
     profileImage = fields.String()
     password = fields.String(load_only=True)
+    roles = fields.Nested(RoleSchema, many=True, dump_only=True)
 
 
 class UserLoginSchema(Schema):

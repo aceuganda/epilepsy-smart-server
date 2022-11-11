@@ -5,7 +5,8 @@ from app.schemas import UserSchema, UserLoginSchema
 from app.models.user import User
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_bcrypt import Bcrypt
-
+from app.models.role import Role 
+from app.helpers.decorators import admin_required
 
 class UserView(Resource):
 
@@ -30,6 +31,12 @@ class UserView(Resource):
 
         user = User(**validated_user_data)
 
+        # get the customer role
+        user_role = Role.find_first(name='app_user')
+
+        if user_role:
+            user.roles.append(user_role)
+
         saved_user = user.save()
 
         if not saved_user:
@@ -39,7 +46,7 @@ class UserView(Resource):
 
         return dict(status='success', data=dict(user=json.loads(new_user_data))), 201
 
-    @jwt_required
+    @admin_required
     def get(self):
         """
         Getting All users
@@ -63,6 +70,7 @@ class UserView(Resource):
 
 class UserDetailView(Resource):
 
+    @jwt_required
     def get(self, user_id):
         """
         Getting individual user
@@ -109,6 +117,7 @@ class UserDetailView(Resource):
 
         return dict(status="success", message="User updated successfully"), 200
 
+    @admin_required
     def delete(self, user_id):
         """
         Delete a single user

@@ -63,6 +63,19 @@ Run migrations for the database. This will create the tables for the models in t
 #### Note:
 If you make changes to the models, you need to create migrations for the changes by running `python manage.py db migrate` and then `python manage.py db upgrade` to add the changes to the database.
 
+
+##### Creating default roles
+
+To create the default roles
+
+`python manage.py create_roles`
+
+##### Creating default admin account
+
+To create an admin account run
+
+`python manage.py admin_user --email=<an email> --password=<the password> --confirm_password=<the password>`
+
 ### Run Application
 
 Run the application with this command

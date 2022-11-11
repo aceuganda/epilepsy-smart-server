@@ -154,7 +154,7 @@
             }
           ],
           "responses": {
-            "201": {
+            "200": {
               "description": "Successfully Logged In User"
             },
             "401": {
@@ -584,6 +584,340 @@
               }
             }
           }
+      },
+      "/roles":{
+        "get": {
+          "tags": ["roles"],
+          "summary": "Gets all Roles",
+          "produces": ["application/json"],
+          "parameters":[
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully gets Roles"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            }
+            ,
+            "500": {
+              "description": "Server error"
+            }
+          }
+        },
+        "post": {
+          "tags": ["roles"],
+          "summary": "Create a new role",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "Role params",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/role"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully created a new role"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+
+      },
+      "/roles/{role_id}":{
+        "get": {
+          "tags": ["roles_detail"],
+          "summary": "Gets a single role",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "role_id",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully gets a single Role"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        },
+        "patch": {
+          "tags": ["roles_detail"],
+          "summary": "Updates roles info",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "role_id",
+              "required": true
+            },
+            {
+              "in": "body",
+              "name": "Role params",
+              "required": false,
+              "schema": {
+                "$ref": "#/definitions/role"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully updates existing Role"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        },
+        "delete": {
+          "tags": ["roles_detail"],
+          "summary": "Delete a role",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "role_id",
+              "required": true
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully deleted role"
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+
+      },
+      "/user/{user_id}/roles":{
+        "post": {
+          "tags": ["user_roles"],
+          "summary": "add a user role",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "user_id",
+              "required": true
+            },
+            {
+              "in": "body",
+              "name": "User role params",
+              "required": false,
+              "schema": {
+                "$ref": "#/definitions/user_role"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully adds user role"
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        },
+        "get": {
+          "tags": ["user_roles"],
+          "summary": "Gets user role",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "user_id",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully gets user role"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        },
+        "patch": {
+          "tags": ["user_roles"],
+          "summary": "Updates user role",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "user_id",
+              "required": true
+            },
+            {
+              "in": "body",
+              "name": "User role params",
+              "required": false,
+              "schema": {
+                "$ref": "#/definitions/user_role"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully updates user Role"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        },
+        "delete": {
+          "tags": ["user_roles"],
+          "summary": "Delete a user role",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "user_id",
+              "required": true
+            },
+            {
+              "in": "body",
+              "name": "User role params",
+              "required": false,
+              "schema": {
+                "$ref": "#/definitions/user_role"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully deleted role"
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+
       }
     },
     "definitions": {
@@ -796,5 +1130,28 @@
           }
         }
 
+    },
+    "role": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "app_user/clinician"
+        }
+      }
+
+  },
+  "user_role": {
+    "type": "object",
+    "required": ["role_id"],
+    "properties": {
+      "role_id": {
+        "type": "number",
+        "example": 1
+      }
     }
+
+}
+
   }}
