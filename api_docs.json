@@ -1102,6 +1102,10 @@
             "type": "string",
             "example": "all doses/some doses/no doses"
           },
+          "reason_missed_dose": {
+            "type": "string",
+            "example": "I forgot to refill the doses"
+          },
           "medicine_name": {
             "type": "string",
             "example": "panadol"
