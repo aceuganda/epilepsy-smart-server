@@ -9,6 +9,7 @@ class MedicationSchema(Schema):
     medicine_id = fields.Integer(required=True, error_message={
     "required": "medicine_id is required" })
     took_medicine = fields.String(required=True)
+    reason_missed_dose = fields.String()
     medicine_name = fields.String()
     experienced_side_effects = fields.Boolean(required=True)
     side_effects_experienced = fields.String()
