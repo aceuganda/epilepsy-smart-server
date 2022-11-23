@@ -49,7 +49,7 @@ def create_superuser(email, password, confirm_password):
 
 
 def create_default_roles():
-    roles = ['administrator', 'app_user']
+    roles = ['administrator', 'app_user', 'clinician']
     for role_name in roles:
         role = Role.find_first(name=role_name)
         if not role:

@@ -201,6 +201,35 @@
           }
         }
       },
+      "/users/register_clinician": {
+        "post": {
+          "tags": ["clinicians"],
+          "summary": "Register a clinician",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "User params",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/user_login_credentials"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully registered clinician"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
       "/seizures/{user_id}": {
         "get": {
           "tags": ["seizures"],

@@ -1,7 +1,7 @@
 import json
 from flask_restful import Resource, request
 
-from app.schemas import UserSchema, UserLoginSchema
+from app.schemas import UserSchema, UserLoginSchema, ClinicianSchema
 from app.models.user import User
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_bcrypt import Bcrypt
@@ -214,3 +214,53 @@ class ResetPassword(Resource):
             return dict(status='fail', message='Internal Server Error'), 500
 
         return dict(status="success", message="User password reset successfully"), 200
+
+
+
+class ClinicianView(Resource):
+
+    def post(self):
+        """
+        Creating a User Account
+        """
+        user_schema = ClinicianSchema()
+
+        user_data = request.get_json()
+
+        validated_user_data, errors = user_schema.load(user_data)
+
+        if errors:
+            return dict(status='fail', message=errors), 400
+
+        existing_user = User.find_first(email=validated_user_data["email"])
+
+        if existing_user:
+            return dict(status='fail',
+                        message=f'User email {validated_user_data["email"]} already exists'), 409
+
+        validated_user_data["username"] = None
+        validated_user_data["age"] = None
+        validated_user_data["gender"] = None
+        validated_user_data["age_of_onset"] = None
+        validated_user_data["seizure_type"] = None
+        validated_user_data["caregiver_name"] = None
+        validated_user_data["caregiver_contact"] = None
+        validated_user_data["institution"] = None
+        validated_user_data["profileImage"] = None
+
+        user = User(**validated_user_data)
+
+        # get the customer role
+        user_role = Role.find_first(name='clinician')
+
+        if user_role:
+            user.roles.append(user_role)
+
+        saved_user = user.save()
+
+        if not saved_user:
+            return dict(status='fail', message='Internal Server Error'), 500
+
+        new_user_data, errors = user_schema.dumps(user)
+
+        return dict(status='success', data=dict(user=json.loads(new_user_data))), 201
