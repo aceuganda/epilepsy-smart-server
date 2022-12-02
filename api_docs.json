@@ -328,6 +328,35 @@
           }
         }
     },
+    "/seizure/overview": {
+      "get": {
+        "tags": ["seizures"],
+        "summary": "Gets all seizure records",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully gets all Seizure records"
+          },
+          "401": {
+            "description": "invalid input, object invalid"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
     "/medications": {
       "post": {
         "tags": ["medication_records"],

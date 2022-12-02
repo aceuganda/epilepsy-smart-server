@@ -77,6 +77,13 @@ class RootModel(db.Model):
         except SQLAlchemyError:
             return False
 
+    @classmethod
+    def get_all(cls):
+        try:
+            return cls.query.all()
+        except SQLAlchemyError:
+            return False
+
     def toDict(self):
         return {
             c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
