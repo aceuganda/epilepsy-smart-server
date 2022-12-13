@@ -1,6 +1,6 @@
 from flask_restful import Api
 from app.controllers import (
-    IndexView, UserView, UserDetailView, UserLoginView, ResetPassword, SiezureView, SeizureDetailView, SeizureOverview, MedicationView, MedicationDetailView, MedicineView, MedicineDetailView
+    IndexView, UserView, UserDetailView, UserLoginView, ResetPassword, SiezureView, SeizureDetailView, SeizureOverview, SeizureDetailOverview, MedicationView, MedicationDetailView, MedicationOverview, MedicationDetailOverview, MedicineView, MedicineDetailView
     , ResilienceView, ResilienceDetailView, RolesView, RolesDetailView, UserRolesView, ClinicianView)
 
 
@@ -23,6 +23,7 @@ api.add_resource(SiezureView, '/seizures', endpoint='seizures')
 api.add_resource(SiezureView, '/seizures/<string:user_id>')
 api.add_resource(SeizureDetailView, '/seizure/<string:seizure_id>', endpoint='seizure')
 api.add_resource(SeizureOverview, '/seizure/overview')
+api.add_resource(SeizureDetailOverview, '/seizure/<string:user_id>/overview)
 
 #Medicine routes
 api.add_resource(MedicineView, '/medicines', endpoint='medicine')
@@ -33,6 +34,8 @@ api.add_resource(MedicineDetailView, '/medicine/<string:medicine_id>')
 api.add_resource(MedicationView, '/medications', endpoint='medication_records')
 api.add_resource(MedicationView, '/medications/<string:user_id>')
 api.add_resource(MedicationDetailView, '/medication/<string:medication_id>')
+api.add_resource(MedicationOverview, '/medication/overview')
+api.add_resource(MedicationDetailOverview, '/medication/<string:user_id>/overview')
 
 #Resilience routes
 api.add_resource(ResilienceView, '/resilience', endpoint='resilience_tracking')

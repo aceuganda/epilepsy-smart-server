@@ -297,6 +297,223 @@ class SeizureOverview(Resource):
 
         return dict(status='success', data=dict(overview=(overview))), 200
 
+class SeizureDetailOverview(Resource):
+
+    @jwt_required
+    def get(self, user_id):
+        """
+        Get all user seizure records 
+        """
+        overview = []
+
+        schema = SeizureSchema(many=True)
+
+        # weekly overview
+
+        weekly_severity = {
+            "monday": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "tuesday": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "wednesday": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "thursday": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "friday": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "saturday": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "sunday": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            }
+        }
+
+        weekly_filter = datetime.today() - timedelta(days = 7)
+
+        weekly_seizures = Seizure.query.filter(Seizure.timestamp > weekly_filter, Seizure.user_id==user_id).all()
+
+        if not weekly_seizures:
+            return dict(status="fail", message=f"No seizure data found"), 404
+
+        weekly_seizure_data, weekly_errors = schema.dumps(weekly_seizures)
+        weekly_seizure_data_list = json.loads(weekly_seizure_data)
+
+        for d in weekly_seizure_data_list:
+            timestamp = d['timestamp']
+            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
+            day = calendar.day_name[dt.weekday()].lower()
+            severity = d["seizure_severity"]
+            weekly_severity[day][severity] +=1
+        
+        overview.append(dict(weekly_severity=weekly_severity))
+
+        if weekly_errors:
+            return dict(status="fail", message=weekly_errors), 500
+
+        # monthly overview
+
+        monthly_severity = {
+            "week1": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "week2": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "week3": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "week4": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "week5": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            }
+        }
+
+        def week_of_month(date):
+            last_day_of_week_of_month = date.day + (7 - (1 + date.weekday()))
+            return str(ceil(last_day_of_week_of_month/7.0))
+
+        monthly_filter = datetime.today() - timedelta(days = 31)
+
+        monthly_seizures = Seizure.query.filter(Seizure.timestamp > monthly_filter, Seizure.user_id==user_id).all()
+
+        if not monthly_seizures:
+            return dict(status="fail", message=f"No seizure data found"), 404
+
+        monthly_seizure_data, monthly_errors = schema.dumps(monthly_seizures)
+        monthly_seizure_data_list = json.loads(monthly_seizure_data)
+
+        for d in monthly_seizure_data_list:
+            timestamp = d['timestamp']
+            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
+            week = "week" + week_of_month(dt)
+            severity = d["seizure_severity"]
+            monthly_severity[week][severity] +=1
+        
+        overview.append(dict(monthly_severity=monthly_severity))
+
+        if monthly_errors:
+            return dict(status="fail", message=monthly_errors), 500
+
+        # yearly severity
+
+        yearly_severity = {
+            "january": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "february": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "march": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "april": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "may": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "june": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "july": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "august": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "september": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "october": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "november": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            },
+            "december": {
+                "mild": 0,
+                "moderate": 0,
+                "severe": 0
+            }
+        }
+
+        yearly_filter = datetime.today() - timedelta(days = 365)
+
+        yearly_seizures = Seizure.query.filter(Seizure.timestamp > yearly_filter, Seizure.user_id==user_id).all()
+
+        if not yearly_seizures:
+            return dict(status="fail", message=f"No seizure data found"), 404
+
+        yearly_seizure_data, yearly_errors = schema.dumps(yearly_seizures)
+        yearly_seizure_data_list = json.loads(yearly_seizure_data)
+
+        for d in yearly_seizure_data_list:
+            timestamp = d['timestamp']
+            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
+            month = calendar.month_name[dt.month].lower()
+            severity = d["seizure_severity"]
+            yearly_severity[month][severity] +=1
+        
+        overview.append(dict(yearly_severity=yearly_severity))
+
+        if yearly_errors:
+            return dict(status="fail", message=yearly_errors), 500
+
+        return dict(status='success', data=dict(overview=overview)), 200    
 
 
 
