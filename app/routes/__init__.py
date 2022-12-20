@@ -23,7 +23,7 @@ api.add_resource(SiezureView, '/seizures', endpoint='seizures')
 api.add_resource(SiezureView, '/seizures/<string:user_id>')
 api.add_resource(SeizureDetailView, '/seizure/<string:seizure_id>', endpoint='seizure')
 api.add_resource(SeizureOverview, '/seizure/overview')
-api.add_resource(SeizureDetailOverview, '/seizure/<string:user_id>/overview)
+api.add_resource(SeizureDetailOverview, '/seizure/<string:user_id>/overview')
 
 #Medicine routes
 api.add_resource(MedicineView, '/medicines', endpoint='medicine')
