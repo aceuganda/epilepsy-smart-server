@@ -331,7 +331,7 @@
     "/seizure/overview": {
       "get": {
         "tags": ["seizures"],
-        "summary": "Gets all seizure records",
+        "summary": "Gets all seizure records: Admin dashboard",
         "produces": ["application/json"],
         "parameters": [
           {
@@ -360,7 +360,7 @@
     "/seizure/{user_id}/overview": {
       "get": {
         "tags": ["seizures"],
-        "summary": "Gets all user seizure records",
+        "summary": "Gets all user seizure records : Admin dashboard",
         "produces": ["application/json"],
         "parameters": [
           {
@@ -491,7 +491,7 @@
       "/medication/overview": {
         "get": {
           "tags": ["medication_records"],
-          "summary": "Gets an overview of all medication records",
+          "summary": "Gets an overview of all medication records: : Admin dashboard",
           "produces": ["application/json"],
           "parameters": [
             {
@@ -520,7 +520,7 @@
       "/medication/{user_id}/overview": {
         "get": {
           "tags": ["medication_records"],
-          "summary": "Gets an overview of all medication records for a single user",
+          "summary": "Gets an overview of all medication records for a single user: : Admin dashboard",
           "produces": ["application/json"],
           "parameters": [
             {
@@ -745,6 +745,137 @@
               }
             }
           }
+      },
+      "/resilience/feelings_overview": {
+        "get": {
+          "tags": ["resilience_tracking"],
+          "summary": "Gets resilence graph data on feelings: Admin dashboard",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully gets all Resilience feelings records"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
+      "/resilience/{user_id}/feelings_overview": {
+        "get": {
+          "tags": ["resilience_tracking"],
+          "summary": "Gets resilence graph data for user on feelings: Admin dashboard",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "user_id",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully gets all Resilience feelings records"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
+      "/resilience/{user_id}/social_engagement": {
+        "get": {
+          "tags": ["resilience_tracking"],
+          "summary": "Gets resilence graph data for user social engagement: Admin dashboard",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "user_id",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully gets all Resilience social engagement records"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
+      "/resilience/{user_id}/peer_treatment": {
+        "get": {
+          "tags": ["resilience_tracking"],
+          "summary": "Gets resilence graph data for user treatment by others: Admin dashboard",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "user_id",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully gets all Resilience: treatment by others records"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
       },
       "/roles":{
         "get": {
