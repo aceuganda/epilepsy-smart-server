@@ -5,7 +5,9 @@ from app.schemas import MedicationSchema
 from app.models.medication import Medication
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_bcrypt import Bcrypt
-
+from datetime import datetime, timedelta
+from math import ceil
+import calendar
 
 class MedicationView(Resource):
 
@@ -104,7 +106,7 @@ class MedicationOverview(Resource):
                 "some doses": 0,
                 "no doses": 0
             },
-            "thursay": {
+            "thursday": {
                 "all doses": 0,
                 "some doses": 0,
                 "no doses": 0
@@ -321,7 +323,7 @@ class MedicationDetailOverview(Resource):
                 "some doses": 0,
                 "no doses": 0
             },
-            "thursay": {
+            "thursday": {
                 "all doses": 0,
                 "some doses": 0,
                 "no doses": 0
