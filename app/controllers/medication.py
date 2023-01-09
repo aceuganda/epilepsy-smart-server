@@ -77,7 +77,47 @@ class MedicationDetailView(Resource):
             return dict(status="fail", message=errors), 500
 
         return dict(status='success', data=dict(medication=json.loads(medication_data))), 200
-    
+
+class MedicationMissedReasons(Resource):
+
+    @jwt_required
+    def get(self, user_id):
+        """
+        Getting individual reasons for missing medication
+        """
+        reasons = []
+
+        schema = MedicationSchema(many=True)
+
+        medications = Medication.find_all(user_id=user_id)
+
+        if not medications:
+            return dict(
+                status='fail',
+                message=f'No Medication data found'
+            ), 404
+        
+        medications, errors = schema.dumps(medications)
+        medications_list = json.loads(medications)
+        print(medications_list)
+
+        for entry in medications_list:
+            reason_missed = entry["reason_missed_dose"]
+            if reason_missed == "" or reason_missed == None:
+                continue
+            else:
+                reasons.append(reason_missed)
+        
+        print(reasons)
+
+        if errors:
+            return dict(status="fail", message="Internal Server Error"), 500
+        
+        if len(reasons) <= 0:
+            return dict(status='fail', message=f'No reasons for missing medication data found'), 404
+        else:
+            return dict(status="success", data=dict(reasons=reasons)), 200
+
 class MedicationOverview(Resource):
 
     @jwt_required

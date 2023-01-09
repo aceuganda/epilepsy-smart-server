@@ -453,8 +453,41 @@
           }
         }
       }
-    }
-    ,
+    },
+    "/medications/{user_id}/missed_reasons": {
+      "get": {
+        "tags": ["medication_records"],
+        "summary": "Get reasons for missing medication for single user",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully gets reasons for missing medication records for single user"
+          },
+          "401": {
+            "description": "invalid input, object invalid"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
     "/medication/{medication_id}": {
       "get": {
         "tags": ["medication_records"],
