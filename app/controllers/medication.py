@@ -99,7 +99,6 @@ class MedicationMissedReasons(Resource):
         
         medications, errors = schema.dumps(medications)
         medications_list = json.loads(medications)
-        print(medications_list)
 
         for entry in medications_list:
             reason_missed = entry["reason_missed_dose"]
@@ -108,8 +107,6 @@ class MedicationMissedReasons(Resource):
             else:
                 reasons.append(reason_missed)
         
-        print(reasons)
-
         if errors:
             return dict(status="fail", message="Internal Server Error"), 500
         

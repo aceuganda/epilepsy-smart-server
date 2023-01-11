@@ -192,6 +192,53 @@ class ResilienceDetailView(Resource):
 
         return dict(status='success', data=dict(resilience=json.loads(resilience_data))), 200
 
+class ResilienceUserFeelings(Resource):
+
+    @jwt_required
+    def get(self, user_id):
+        """
+        Getting individual users feelings in last month
+        """
+        feelings = []
+
+        schema = ResilienceSchema(many=True)
+
+        monthly_filter = datetime.today() - timedelta(days = 31)
+
+        resiliences = Resilience.query.filter(Resilience.timestamp > monthly_filter, Resilience.user_id==user_id).all()
+
+        if not resiliences:
+            return dict(
+                status='fail',
+                message=f'No Resilience data found'
+            ), 404
+        
+        resiliences, errors = schema.dumps(resiliences)
+        resiliences_list = json.loads(resiliences)
+
+        for entry in resiliences_list:
+            feelings_experienced = entry["feelings_experienced"]
+            if feelings_experienced == "" or feelings_experienced == None:
+                continue
+            else:
+                temp = None
+                for i in feelings_experienced:
+                    temp = i
+                    rmopen = temp.replace('[', '')
+                    rmclose = rmopen.replace(']', '')
+                    rmqopen = rmclose.replace('"', '')
+
+                    newtemp = rmqopen.split(',')
+                    for i in newtemp:
+                        feelings.append(i)    
+        
+        if errors:
+            return dict(status="fail", message="Internal Server Error"), 500
+
+        if len(feelings) <= 0:
+            return dict(status='fail', message=f'No reasons for missing medication data found'), 404
+        else:
+            return dict(status="success", data=dict(feelings=feelings)), 200
 
 class ResilienceFeelingsOverview(Resource):
 

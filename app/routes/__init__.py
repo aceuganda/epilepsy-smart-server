@@ -1,7 +1,7 @@
 from flask_restful import Api
 from app.controllers import (
     IndexView, UserView, UserDetailView, UserLoginView, ResetPassword, SiezureView, SeizureDetailView, SeizureOverview, SeizureDetailOverview, MedicationView, MedicationDetailView, MedicationOverview, MedicationMissedReasons, MedicationDetailOverview, MedicineView, MedicineDetailView
-    , ResilienceView, ResilienceDetailView, RolesView, RolesDetailView, UserRolesView, ClinicianView, ResilienceFeelingsOverview, ResilienceFeelingsDetailedOverview, ResilienceSocialEngagementDetailedOverview, ResilienceTreatmentScaleDetailedOverview)
+    , ResilienceView, ResilienceDetailView, RolesView, RolesDetailView, UserRolesView, ClinicianView, ResilienceFeelingsOverview, ResilienceFeelingsDetailedOverview, ResilienceSocialEngagementDetailedOverview, ResilienceTreatmentScaleDetailedOverview, ResilienceUserFeelings)
 
 
 api = Api()
@@ -46,6 +46,7 @@ api.add_resource(ResilienceFeelingsOverview, '/resilience/feelings_overview')
 api.add_resource(ResilienceFeelingsDetailedOverview, '/resilience/<string:user_id>/feelings_overview')
 api.add_resource(ResilienceSocialEngagementDetailedOverview, '/resilience/<string:user_id>/social_engagement')
 api.add_resource(ResilienceTreatmentScaleDetailedOverview, '/resilience/<string:user_id>/peer_treatment')
+api.add_resource(ResilienceUserFeelings, '/resilience/<string:user_id>/feelings')
 
 # Roles routes
 api.add_resource(RolesView, '/roles', endpoint='roles')
