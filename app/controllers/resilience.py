@@ -192,6 +192,52 @@ class ResilienceDetailView(Resource):
 
         return dict(status='success', data=dict(resilience=json.loads(resilience_data))), 200
 
+class ResilienceUserSocialEngagementActivities(Resource):
+
+    @jwt_required
+    def get(self, user_id):
+        """
+        Getting user's social engagement activities
+        """
+        activities = []
+
+        schema = ResilienceSchema(many=True)
+
+        resiliences = Resilience.query.filter(Resilience.user_id==user_id).all()
+
+        if not resiliences:
+            return dict(
+                status='fail',
+                message=f'No Resilience data found'
+            ), 404
+        
+        resiliences, errors = schema.dumps(resiliences)
+        resiliences_list = json.loads(resiliences)
+
+        for entry in resiliences_list:
+            engagement_activities = entry["engagement_activities"]
+            if engagement_activities == "" or engagement_activities == None:
+                continue
+            else:
+                temp = None
+                for i in engagement_activities:
+                    temp = i
+                    rmopen = temp.replace('[', '')
+                    rmclose = rmopen.replace(']', '')
+                    rmqopen = rmclose.replace('"', '')
+
+                    newtemp = rmqopen.split(',')
+                    for i in newtemp:
+                        activities.append(i)
+        
+        if errors:
+            return dict(status="fail", message="Internal Server Error"), 500
+
+        if len(activities) <= 0:
+            return dict(status='fail', message=f'No social engagement activities data found'), 404
+        else:
+            return dict(status="success", data=dict(activities=activities)), 200
+
 class ResilienceUserFeelings(Resource):
 
     @jwt_required
