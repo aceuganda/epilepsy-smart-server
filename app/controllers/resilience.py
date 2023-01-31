@@ -298,7 +298,6 @@ class ResilienceFeelingsOverview(Resource):
         schema = ResilienceSchema(many=True)
 
         # weekly overview
-
         weekly_feelings_count = {
             "monday": {
                "positive":0,
@@ -330,30 +329,7 @@ class ResilienceFeelingsOverview(Resource):
             }
         }
 
-        weekly_filter = datetime.today() - timedelta(days = 7)
-
-        weekly_resiliences = Resilience.query.filter(Resilience.timestamp > weekly_filter).all()
-
-        if not weekly_resiliences:
-            return dict(status="fail", message="No resilience data found"), 404
-
-        weekly_resilience_data, weekly_errors = schema.dumps(weekly_resiliences)
-        weekly_resilience_data_list = json.loads(weekly_resilience_data)
-
-        for d in weekly_resilience_data_list:
-            timestamp = d['timestamp']
-            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
-            day = calendar.day_name[dt.weekday()].lower()
-            feelings_count = d["type_of_feelings"].lower()
-            weekly_feelings_count[day][feelings_count] +=1
-        
-        overview.append(dict(weekly_feelings_count=weekly_feelings_count))
-
-        if weekly_errors:
-            return dict(status="fail", message=weekly_errors), 500
-
         # monthly overview
-
         monthly_feelings_count = {
             "week1": {
                "positive":0,
@@ -374,37 +350,14 @@ class ResilienceFeelingsOverview(Resource):
             "week5": {
                "positive":0,
                 "negative":0
+            },
+            "week6": {
+               "positive":0,
+                "negative":0
             }
         }
 
-        def week_of_month(date):
-            last_day_of_week_of_month = date.day + (7 - (1 + date.weekday()))
-            return str(ceil(last_day_of_week_of_month/7.0))
-
-        monthly_filter = datetime.today() - timedelta(days = 31)
-
-        monthly_resiliences = Resilience.query.filter(Resilience.timestamp > monthly_filter).all()
-
-        if not monthly_resiliences:
-            return dict(status="fail", message="No resilience data found"), 404
-
-        monthly_resilience_data, monthly_errors = schema.dumps(monthly_resiliences)
-        monthly_resilience_data_list = json.loads(monthly_resilience_data)
-
-        for d in monthly_resilience_data_list:
-            timestamp = d['timestamp']
-            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
-            week = "week" + week_of_month(dt)
-            feelings_count = d["type_of_feelings"].lower()
-            monthly_feelings_count[week][feelings_count] +=1
-        
-        overview.append(dict(monthly_feelings_count=monthly_feelings_count))
-
-        if monthly_errors:
-            return dict(status="fail", message=monthly_errors), 500
-
         # yearly feelings_count
-
         yearly_feelings_count = {
             "january": {
                "positive":0,
@@ -456,12 +409,63 @@ class ResilienceFeelingsOverview(Resource):
             }
         }
 
+        # get weekly data
+        weekly_filter = datetime.today() - timedelta(days = 7)
+
+        weekly_resiliences = Resilience.query.filter(Resilience.timestamp > weekly_filter).all()
+
+        # get monthly data
+        monthly_filter = datetime.today() - timedelta(days = 31)
+
+        monthly_resiliences = Resilience.query.filter(Resilience.timestamp > monthly_filter).all()
+
+        # get yearly data
         yearly_filter = datetime.today() - timedelta(days = 365)
 
         yearly_resiliences = Resilience.query.filter(Resilience.timestamp > yearly_filter).all()
 
-        if not yearly_resiliences:
+        if (not weekly_resiliences and not monthly_resiliences and not yearly_resiliences):
             return dict(status="fail", message="No resilience data found"), 404
+
+        # append weekly data to overview
+
+        weekly_resilience_data, weekly_errors = schema.dumps(weekly_resiliences)
+        weekly_resilience_data_list = json.loads(weekly_resilience_data)
+
+        for d in weekly_resilience_data_list:
+            timestamp = d['timestamp']
+            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
+            day = calendar.day_name[dt.weekday()].lower()
+            feelings_count = d["type_of_feelings"].lower()
+            weekly_feelings_count[day][feelings_count] +=1
+        
+        overview.append(dict(weekly_feelings_count=weekly_feelings_count))
+
+        if weekly_errors:
+            return dict(status="fail", message=weekly_errors), 500
+
+        # append monthly data to overview
+
+        def week_of_month(date):
+            last_day_of_week_of_month = date.day + (7 - (1 + date.weekday()))
+            return str(ceil(last_day_of_week_of_month/7.0))
+
+        monthly_resilience_data, monthly_errors = schema.dumps(monthly_resiliences)
+        monthly_resilience_data_list = json.loads(monthly_resilience_data)
+
+        for d in monthly_resilience_data_list:
+            timestamp = d['timestamp']
+            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
+            week = "week" + week_of_month(dt)
+            feelings_count = d["type_of_feelings"].lower()
+            monthly_feelings_count[week][feelings_count] +=1
+        
+        overview.append(dict(monthly_feelings_count=monthly_feelings_count))
+
+        if monthly_errors:
+            return dict(status="fail", message=monthly_errors), 500 
+
+        # append yearky data to overview
 
         yearly_resilience_data, yearly_errors = schema.dumps(yearly_resiliences)
         yearly_resilience_data_list = json.loads(yearly_resilience_data)
@@ -494,7 +498,6 @@ class ResilienceFeelingsDetailedOverview(Resource):
         schema = ResilienceSchema(many=True)
 
         # weekly overview
-
         weekly_feelings_count = {
             "monday": {
                "positive":0,
@@ -526,30 +529,7 @@ class ResilienceFeelingsDetailedOverview(Resource):
             }
         }
 
-        weekly_filter = datetime.today() - timedelta(days = 7)
-
-        weekly_resiliences = Resilience.query.filter(Resilience.timestamp > weekly_filter, Resilience.user_id==user_id).all()
-
-        if not weekly_resiliences:
-            return dict(status="fail", message="No resilience data found"), 404
-
-        weekly_resilience_data, weekly_errors = schema.dumps(weekly_resiliences)
-        weekly_resilience_data_list = json.loads(weekly_resilience_data)
-
-        for d in weekly_resilience_data_list:
-            timestamp = d['timestamp']
-            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
-            day = calendar.day_name[dt.weekday()].lower()
-            feelings_count = d["type_of_feelings"].lower()
-            weekly_feelings_count[day][feelings_count] +=1
-        
-        overview.append(dict(weekly_feelings_count=weekly_feelings_count))
-
-        if weekly_errors:
-            return dict(status="fail", message=weekly_errors), 500
-
         # monthly overview
-
         monthly_feelings_count = {
             "week1": {
                "positive":0,
@@ -570,37 +550,14 @@ class ResilienceFeelingsDetailedOverview(Resource):
             "week5": {
                "positive":0,
                 "negative":0
+            },
+            "week6": {
+               "positive":0,
+                "negative":0
             }
         }
 
-        def week_of_month(date):
-            last_day_of_week_of_month = date.day + (7 - (1 + date.weekday()))
-            return str(ceil(last_day_of_week_of_month/7.0))
-
-        monthly_filter = datetime.today() - timedelta(days = 31)
-
-        monthly_resiliences = Resilience.query.filter(Resilience.timestamp > monthly_filter, Resilience.user_id==user_id).all()
-
-        if not monthly_resiliences:
-            return dict(status="fail", message="No resilience data found"), 404
-
-        monthly_resilience_data, monthly_errors = schema.dumps(monthly_resiliences)
-        monthly_resilience_data_list = json.loads(monthly_resilience_data)
-
-        for d in monthly_resilience_data_list:
-            timestamp = d['timestamp']
-            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
-            week = "week" + week_of_month(dt)
-            feelings_count = d["type_of_feelings"].lower()
-            monthly_feelings_count[week][feelings_count] +=1
-        
-        overview.append(dict(monthly_feelings_count=monthly_feelings_count))
-
-        if monthly_errors:
-            return dict(status="fail", message=monthly_errors), 500
-
         # yearly feelings_count
-
         yearly_feelings_count = {
             "january": {
                "positive":0,
@@ -652,12 +609,63 @@ class ResilienceFeelingsDetailedOverview(Resource):
             }
         }
 
+        # get weekly data
+        weekly_filter = datetime.today() - timedelta(days = 7)
+
+        weekly_resiliences = Resilience.query.filter(Resilience.timestamp > weekly_filter, Resilience.user_id==user_id).all()
+
+        # get monthly data
+        monthly_filter = datetime.today() - timedelta(days = 31)
+
+        monthly_resiliences = Resilience.query.filter(Resilience.timestamp > monthly_filter, Resilience.user_id==user_id).all()
+
+        # get yearly data
         yearly_filter = datetime.today() - timedelta(days = 365)
 
         yearly_resiliences = Resilience.query.filter(Resilience.timestamp > yearly_filter, Resilience.user_id==user_id).all()
 
-        if not yearly_resiliences:
+        if (not weekly_resiliences and not monthly_resiliences and not yearly_resiliences):
             return dict(status="fail", message="No resilience data found"), 404
+
+        # append weekly data to overview
+
+        weekly_resilience_data, weekly_errors = schema.dumps(weekly_resiliences)
+        weekly_resilience_data_list = json.loads(weekly_resilience_data)
+
+        for d in weekly_resilience_data_list:
+            timestamp = d['timestamp']
+            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
+            day = calendar.day_name[dt.weekday()].lower()
+            feelings_count = d["type_of_feelings"].lower()
+            weekly_feelings_count[day][feelings_count] +=1
+        
+        overview.append(dict(weekly_feelings_count=weekly_feelings_count))
+
+        if weekly_errors:
+            return dict(status="fail", message=weekly_errors), 500
+
+        # append monthly data to overview
+
+        def week_of_month(date):
+            last_day_of_week_of_month = date.day + (7 - (1 + date.weekday()))
+            return str(ceil(last_day_of_week_of_month/7.0))
+
+        monthly_resilience_data, monthly_errors = schema.dumps(monthly_resiliences)
+        monthly_resilience_data_list = json.loads(monthly_resilience_data)
+
+        for d in monthly_resilience_data_list:
+            timestamp = d['timestamp']
+            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
+            week = "week" + week_of_month(dt)
+            feelings_count = d["type_of_feelings"].lower()
+            monthly_feelings_count[week][feelings_count] +=1
+        
+        overview.append(dict(monthly_feelings_count=monthly_feelings_count))
+
+        if monthly_errors:
+            return dict(status="fail", message=monthly_errors), 500
+
+        # append yearly data to overview
 
         yearly_resilience_data, yearly_errors = schema.dumps(yearly_resiliences)
         yearly_resilience_data_list = json.loads(yearly_resilience_data)
@@ -689,7 +697,6 @@ class ResilienceSocialEngagementDetailedOverview(Resource):
         schema = ResilienceSchema(many=True)
 
         # weekly overview
-
         weekly_social_engagement_count = {
             "monday": {
                 "true":0,
@@ -721,30 +728,7 @@ class ResilienceSocialEngagementDetailedOverview(Resource):
             }
         }
 
-        weekly_filter = datetime.today() - timedelta(days = 7)
-
-        weekly_resiliences = Resilience.query.filter(Resilience.timestamp > weekly_filter, Resilience.user_id==user_id).all()
-
-        if not weekly_resiliences:
-            return dict(status="fail", message="No resilience: social engagement data found"), 404
-
-        weekly_resilience_data, weekly_errors = schema.dumps(weekly_resiliences)
-        weekly_resilience_data_list = json.loads(weekly_resilience_data)
-
-        for d in weekly_resilience_data_list:
-            timestamp = d['timestamp']
-            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
-            day = calendar.day_name[dt.weekday()].lower()
-            social_engagement_count = str(d["engaged_socially_today"]).lower()
-            weekly_social_engagement_count[day][social_engagement_count] +=1
-        
-        overview.append(dict(weekly_social_engagement_count=weekly_social_engagement_count))
-
-        if weekly_errors:
-            return dict(status="fail", message=weekly_errors), 500
-
         # monthly overview
-
         monthly_social_engagement_count = {
             "week1": {
                 "true":0,
@@ -765,37 +749,14 @@ class ResilienceSocialEngagementDetailedOverview(Resource):
             "week5": {
                 "true":0,
                 "false":0
+            },
+            "week6": {
+                "true":0,
+                "false":0
             }
         }
 
-        def week_of_month(date):
-            last_day_of_week_of_month = date.day + (7 - (1 + date.weekday()))
-            return str(ceil(last_day_of_week_of_month/7.0))
-
-        monthly_filter = datetime.today() - timedelta(days = 31)
-
-        monthly_resiliences = Resilience.query.filter(Resilience.timestamp > monthly_filter, Resilience.user_id==user_id).all()
-
-        if not monthly_resiliences:
-            return dict(status="fail", message="No resilience: social engagement data found"), 404
-
-        monthly_resilience_data, monthly_errors = schema.dumps(monthly_resiliences)
-        monthly_resilience_data_list = json.loads(monthly_resilience_data)
-
-        for d in monthly_resilience_data_list:
-            timestamp = d['timestamp']
-            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
-            week = "week" + week_of_month(dt)
-            social_engagement_count = str(d["engaged_socially_today"]).lower()
-            monthly_social_engagement_count[week][social_engagement_count] +=1
-        
-        overview.append(dict(monthly_social_engagement_count=monthly_social_engagement_count))
-
-        if monthly_errors:
-            return dict(status="fail", message=monthly_errors), 500
-
         # yearly social_engagement_count
-
         yearly_social_engagement_count = {
             "january": {
                 "true":0,
@@ -847,13 +808,62 @@ class ResilienceSocialEngagementDetailedOverview(Resource):
             }
         }
 
+        # get weekly data
+        weekly_filter = datetime.today() - timedelta(days = 7)
+
+        weekly_resiliences = Resilience.query.filter(Resilience.timestamp > weekly_filter, Resilience.user_id==user_id).all()
+
+        # get monthly data
+        monthly_filter = datetime.today() - timedelta(days = 31)
+
+        monthly_resiliences = Resilience.query.filter(Resilience.timestamp > monthly_filter, Resilience.user_id==user_id).all()
+
+        # get yearly data
         yearly_filter = datetime.today() - timedelta(days = 365)
 
         yearly_resiliences = Resilience.query.filter(Resilience.timestamp > yearly_filter, Resilience.user_id==user_id).all()
 
-        if not yearly_resiliences:
-            return dict(status="fail", message="No resilience:social engagement data found"), 404
+        if (not weekly_resiliences and not monthly_resiliences and not yearly_resiliences):
+            return dict(status="fail", message="No resilience: social engagement data found"), 404
 
+        weekly_resilience_data, weekly_errors = schema.dumps(weekly_resiliences)
+        weekly_resilience_data_list = json.loads(weekly_resilience_data)
+
+        for d in weekly_resilience_data_list:
+            timestamp = d['timestamp']
+            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
+            day = calendar.day_name[dt.weekday()].lower()
+            social_engagement_count = str(d["engaged_socially_today"]).lower()
+            weekly_social_engagement_count[day][social_engagement_count] +=1
+        
+        overview.append(dict(weekly_social_engagement_count=weekly_social_engagement_count))
+
+        if weekly_errors:
+            return dict(status="fail", message=weekly_errors), 500
+
+        # append weekly data to overview
+
+        def week_of_month(date):
+            last_day_of_week_of_month = date.day + (7 - (1 + date.weekday()))
+            return str(ceil(last_day_of_week_of_month/7.0))
+
+        monthly_resilience_data, monthly_errors = schema.dumps(monthly_resiliences)
+        monthly_resilience_data_list = json.loads(monthly_resilience_data)
+
+        for d in monthly_resilience_data_list:
+            timestamp = d['timestamp']
+            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
+            week = "week" + week_of_month(dt)
+            social_engagement_count = str(d["engaged_socially_today"]).lower()
+            monthly_social_engagement_count[week][social_engagement_count] +=1
+        
+        overview.append(dict(monthly_social_engagement_count=monthly_social_engagement_count))
+
+        if monthly_errors:
+            return dict(status="fail", message=monthly_errors), 500
+        
+        # append yearly data to overview
+        
         yearly_resilience_data, yearly_errors = schema.dumps(yearly_resiliences)
         yearly_resilience_data_list = json.loads(yearly_resilience_data)
 
@@ -884,7 +894,6 @@ class ResilienceTreatmentScaleDetailedOverview(Resource):
         schema = ResilienceSchema(many=True)
 
         # weekly overview
-
         weekly_treatment_scale_count = {
             "monday": {
                 0:0,
@@ -979,30 +988,7 @@ class ResilienceTreatmentScaleDetailedOverview(Resource):
             }
         }
 
-        weekly_filter = datetime.today() - timedelta(days = 7)
-
-        weekly_resiliences = Resilience.query.filter(Resilience.timestamp > weekly_filter, Resilience.user_id==user_id).all()
-
-        if not weekly_resiliences:
-            return dict(status="fail", message="No resilience: social engagement data found"), 404
-
-        weekly_resilience_data, weekly_errors = schema.dumps(weekly_resiliences)
-        weekly_resilience_data_list = json.loads(weekly_resilience_data)
-
-        for d in weekly_resilience_data_list:
-            timestamp = d['timestamp']
-            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
-            day = calendar.day_name[dt.weekday()].lower()
-            treatment_scale_count = int(d["treatment_scale_by_other"]/10)
-            weekly_treatment_scale_count[day][treatment_scale_count] +=1
-        
-        overview.append(dict(weekly_treatment_scale_count=weekly_treatment_scale_count))
-
-        if weekly_errors:
-            return dict(status="fail", message=weekly_errors), 500
-
         # monthly overview
-
         monthly_treatment_scale_count = {
             "week1": {
                 0:0,
@@ -1068,37 +1054,23 @@ class ResilienceTreatmentScaleDetailedOverview(Resource):
                 8:0,
                 9:0,
                 10:0
+            },
+            "week6": {
+                0:0,
+                1:0,
+                2:0,
+                3:0,
+                4:0,
+                5:0,
+                6:0,
+                7:0,
+                8:0,
+                9:0,
+                10:0
             }
         }
 
-        def week_of_month(date):
-            last_day_of_week_of_month = date.day + (7 - (1 + date.weekday()))
-            return str(ceil(last_day_of_week_of_month/7.0))
-
-        monthly_filter = datetime.today() - timedelta(days = 31)
-
-        monthly_resiliences = Resilience.query.filter(Resilience.timestamp > monthly_filter, Resilience.user_id==user_id).all()
-
-        if not monthly_resiliences:
-            return dict(status="fail", message="No resilience: social engagement data found"), 404
-
-        monthly_resilience_data, monthly_errors = schema.dumps(monthly_resiliences)
-        monthly_resilience_data_list = json.loads(monthly_resilience_data)
-
-        for d in monthly_resilience_data_list:
-            timestamp = d['timestamp']
-            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
-            week = "week" + week_of_month(dt)
-            treatment_scale_count = int(d["treatment_scale_by_other"]/10)
-            monthly_treatment_scale_count[week][treatment_scale_count] +=1
-        
-        overview.append(dict(monthly_treatment_scale_count=monthly_treatment_scale_count))
-
-        if monthly_errors:
-            return dict(status="fail", message=monthly_errors), 500
-
         # yearly treatment_scale_count
-
         yearly_treatment_scale_count = {
             "january": {
                 0:0,
@@ -1258,12 +1230,63 @@ class ResilienceTreatmentScaleDetailedOverview(Resource):
             }
         }
 
+        # get weekly data
+        weekly_filter = datetime.today() - timedelta(days = 7)
+
+        weekly_resiliences = Resilience.query.filter(Resilience.timestamp > weekly_filter, Resilience.user_id==user_id).all()
+
+        # get monthly data
+        monthly_filter = datetime.today() - timedelta(days = 31)
+
+        monthly_resiliences = Resilience.query.filter(Resilience.timestamp > monthly_filter, Resilience.user_id==user_id).all()
+
+        # get yearly data
         yearly_filter = datetime.today() - timedelta(days = 365)
 
         yearly_resiliences = Resilience.query.filter(Resilience.timestamp > yearly_filter, Resilience.user_id==user_id).all()
 
-        if not yearly_resiliences:
-            return dict(status="fail", message="No resilience:social engagement data found"), 404
+        if (not weekly_resiliences and not monthly_resiliences and not yearly_resiliences):
+            return dict(status="fail", message="No resilience: social engagement data found"), 404
+
+        # append weekly data to overview
+
+        weekly_resilience_data, weekly_errors = schema.dumps(weekly_resiliences)
+        weekly_resilience_data_list = json.loads(weekly_resilience_data)
+
+        for d in weekly_resilience_data_list:
+            timestamp = d['timestamp']
+            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
+            day = calendar.day_name[dt.weekday()].lower()
+            treatment_scale_count = int(d["treatment_scale_by_other"]/10)
+            weekly_treatment_scale_count[day][treatment_scale_count] +=1
+        
+        overview.append(dict(weekly_treatment_scale_count=weekly_treatment_scale_count))
+
+        if weekly_errors:
+            return dict(status="fail", message=weekly_errors), 500
+
+        # append monthly data to overview
+
+        def week_of_month(date):
+            last_day_of_week_of_month = date.day + (7 - (1 + date.weekday()))
+            return str(ceil(last_day_of_week_of_month/7.0))
+
+        monthly_resilience_data, monthly_errors = schema.dumps(monthly_resiliences)
+        monthly_resilience_data_list = json.loads(monthly_resilience_data)
+
+        for d in monthly_resilience_data_list:
+            timestamp = d['timestamp']
+            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
+            week = "week" + week_of_month(dt)
+            treatment_scale_count = int(d["treatment_scale_by_other"]/10)
+            monthly_treatment_scale_count[week][treatment_scale_count] +=1
+        
+        overview.append(dict(monthly_treatment_scale_count=monthly_treatment_scale_count))
+
+        if monthly_errors:
+            return dict(status="fail", message=monthly_errors), 500
+
+        # append yearly data to overview
 
         yearly_resilience_data, yearly_errors = schema.dumps(yearly_resiliences)
         yearly_resilience_data_list = json.loads(yearly_resilience_data)
