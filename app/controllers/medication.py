@@ -165,29 +165,6 @@ class MedicationOverview(Resource):
             }
         }
 
-        weekly_filter = datetime.today() - timedelta(days = 7)
-
-        weekly_medication = Medication.query.filter(Medication.timestamp > weekly_filter).all()
-        
-        if not weekly_medication:
-            return dict(status="fail", message=f"No medication data found"), 404
-
-        weekly_medication_data, weekly_errors = schema.dumps(weekly_medication)
-        weekly_medication_data_list = json.loads(weekly_medication_data)
-        print(weekly_medication_data_list)
-
-        for data in weekly_medication_data_list:
-            timestamp = data['timestamp']
-            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
-            day = calendar.day_name[dt.weekday()].lower()
-            took_medicine = data["took_medicine"]
-            weekly_medications[day][took_medicine] += 1
-        
-        overview.append(dict(weekly_medications=weekly_medications))
-
-        if weekly_errors:
-            return dict(status="fail", message=weekly_errors), 500
-
         # monthly overview
         monthly_medications = {
             "week1": {
@@ -214,35 +191,13 @@ class MedicationOverview(Resource):
                 "all doses": 0,
                 "some doses": 0,
                 "no doses": 0
+            },
+            "week6": {
+                "all doses": 0,
+                "some doses": 0,
+                "no doses": 0
             }
         }
-
-        def week_of_month(date):
-            last_day_of_week_of_month = date.day + (7 - (1 + date.weekday()))
-            return str(ceil(last_day_of_week_of_month/7.0))
-
-        monthly_filter = datetime.today() - timedelta(days = 31)
-
-        monthly_medication = Medication.query.filter(Medication.timestamp > monthly_filter).all()
-        
-        if not monthly_medication:
-            return dict(status="fail", message=f"No medication data found"), 404
-
-        monthly_medication_data, monthly_errors = schema.dumps(monthly_medication)
-        monthly_medication_data_list = json.loads(monthly_medication_data)
-        print(monthly_medication_data_list)
-
-        for data in monthly_medication_data_list:
-            timestamp = data['timestamp']
-            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
-            week = "week" + week_of_month(dt)
-            took_medicine = data["took_medicine"]
-            monthly_medications[week][took_medicine] += 1
-        
-        overview.append(dict(monthly_medications=monthly_medications))
-
-        if monthly_errors:
-            return dict(status="fail", message=monthly_errors), 500
 
         # yearly overview
         yearly_medications = {
@@ -308,12 +263,64 @@ class MedicationOverview(Resource):
             }
         }
 
+        # get weekly data
+        weekly_filter = datetime.today() - timedelta(days = 7)
+
+        weekly_medication = Medication.query.filter(Medication.timestamp > weekly_filter).all()
+
+        # get monthly data
+        monthly_filter = datetime.today() - timedelta(days = 31)
+
+        monthly_medication = Medication.query.filter(Medication.timestamp > monthly_filter).all()
+
+        # get annual data
         yearly_filter = datetime.today() - timedelta(days = 365)
 
         yearly_medication = Medication.query.filter(Medication.timestamp > yearly_filter).all()
         
-        if not yearly_medication:
+        if (not weekly_medication and not monthly_medication and not yearly_medication):
             return dict(status="fail", message=f"No medication data found"), 404
+
+        # append weekly data to overview
+
+        weekly_medication_data, weekly_errors = schema.dumps(weekly_medication)
+        weekly_medication_data_list = json.loads(weekly_medication_data)
+
+        for data in weekly_medication_data_list:
+            timestamp = data['timestamp']
+            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
+            day = calendar.day_name[dt.weekday()].lower()
+            took_medicine = data["took_medicine"]
+            weekly_medications[day][took_medicine] += 1
+        
+        overview.append(dict(weekly_medications=weekly_medications))
+
+        if weekly_errors:
+            return dict(status="fail", message=weekly_errors), 500
+        
+        # append monthly data to overview
+
+        def week_of_month(date):
+            last_day_of_week_of_month = date.day + (7 - (1 + date.weekday()))
+            return str(ceil(last_day_of_week_of_month/7.0))
+
+        monthly_medication_data, monthly_errors = schema.dumps(monthly_medication)
+        monthly_medication_data_list = json.loads(monthly_medication_data)
+        print(monthly_medication_data_list)
+
+        for data in monthly_medication_data_list:
+            timestamp = data['timestamp']
+            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
+            week = "week" + week_of_month(dt)
+            took_medicine = data["took_medicine"]
+            monthly_medications[week][took_medicine] += 1
+        
+        overview.append(dict(monthly_medications=monthly_medications))
+
+        if monthly_errors:
+            return dict(status="fail", message=monthly_errors), 500
+
+       # append yearly data to overview
 
         yearly_medication_data, yearly_errors = schema.dumps(yearly_medication)
         yearly_medication_data_list = json.loads(yearly_medication_data)
@@ -382,29 +389,6 @@ class MedicationDetailOverview(Resource):
             }
         }
 
-        weekly_filter = datetime.today() - timedelta(days = 7)
-
-        weekly_medication = Medication.query.filter(Medication.timestamp > weekly_filter, Medication.user_id==user_id).all()
-        
-        if not weekly_medication:
-            return dict(status="fail", message=f"No medication data found"), 404
-
-        weekly_medication_data, weekly_errors = schema.dumps(weekly_medication)
-        weekly_medication_data_list = json.loads(weekly_medication_data)
-        print(weekly_medication_data_list)
-
-        for data in weekly_medication_data_list:
-            timestamp = data['timestamp']
-            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
-            day = calendar.day_name[dt.weekday()].lower()
-            took_medicine = data["took_medicine"]
-            weekly_medications[day][took_medicine] += 1
-        
-        overview.append(dict(weekly_medications=weekly_medications))
-
-        if weekly_errors:
-            return dict(status="fail", message=weekly_errors), 500
-
         # monthly overview
         monthly_medications = {
             "week1": {
@@ -431,34 +415,13 @@ class MedicationDetailOverview(Resource):
                 "all doses": 0,
                 "some doses": 0,
                 "no doses": 0
+            },
+            "week6": {
+                "all doses": 0,
+                "some doses": 0,
+                "no doses": 0
             }
         }
-
-        def week_of_month(date):
-            last_day_of_week_of_month = date.day + (7 - (1 + date.weekday()))
-            return str(ceil(last_day_of_week_of_month/7.0))
-
-        monthly_filter = datetime.today() - timedelta(days = 31)
-
-        monthly_medication = Medication.query.filter(Medication.timestamp > monthly_filter, Medication.user_id==user_id).all()
-        
-        if not monthly_medication:
-            return dict(status="fail", message=f"No medication data found"), 404
-
-        monthly_medication_data, monthly_errors = schema.dumps(monthly_medication)
-        monthly_medication_data_list = json.loads(monthly_medication_data)
-
-        for data in monthly_medication_data_list:
-            timestamp = data['timestamp']
-            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
-            week = "week" + week_of_month(dt)
-            took_medicine = data["took_medicine"]
-            monthly_medications[week][took_medicine] += 1
-        
-        overview.append(dict(monthly_medications=monthly_medications))
-
-        if monthly_errors:
-            return dict(status="fail", message=monthly_errors), 500
 
         # yearly overview
         yearly_medications = {
@@ -524,12 +487,63 @@ class MedicationDetailOverview(Resource):
             }
         }
 
+        # get weekly data
+        weekly_filter = datetime.today() - timedelta(days = 7)
+
+        weekly_medication = Medication.query.filter(Medication.timestamp > weekly_filter, Medication.user_id==user_id).all()
+
+        # get monthly data
+        monthly_filter = datetime.today() - timedelta(days = 31)
+
+        monthly_medication = Medication.query.filter(Medication.timestamp > monthly_filter, Medication.user_id==user_id).all()
+
+        # get yearly data
         yearly_filter = datetime.today() - timedelta(days = 365)
 
         yearly_medication = Medication.query.filter(Medication.timestamp > yearly_filter, Medication.user_id==user_id).all()
         
-        if not yearly_medication:
+        if (not weekly_medication and not monthly_medication and not yearly_medication):
             return dict(status="fail", message=f"No medication data found"), 404
+
+        # append weekly data to overview
+
+        weekly_medication_data, weekly_errors = schema.dumps(weekly_medication)
+        weekly_medication_data_list = json.loads(weekly_medication_data)
+
+        for data in weekly_medication_data_list:
+            timestamp = data['timestamp']
+            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
+            day = calendar.day_name[dt.weekday()].lower()
+            took_medicine = data["took_medicine"]
+            weekly_medications[day][took_medicine] += 1
+        
+        overview.append(dict(weekly_medications=weekly_medications))
+
+        if weekly_errors:
+            return dict(status="fail", message=weekly_errors), 500
+
+        # append monthly data to overview
+
+        def week_of_month(date):
+            last_day_of_week_of_month = date.day + (7 - (1 + date.weekday()))
+            return str(ceil(last_day_of_week_of_month/7.0))
+
+        monthly_medication_data, monthly_errors = schema.dumps(monthly_medication)
+        monthly_medication_data_list = json.loads(monthly_medication_data)
+
+        for data in monthly_medication_data_list:
+            timestamp = data['timestamp']
+            dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
+            week = "week" + week_of_month(dt)
+            took_medicine = data["took_medicine"]
+            monthly_medications[week][took_medicine] += 1
+        
+        overview.append(dict(monthly_medications=monthly_medications))
+
+        if monthly_errors:
+            return dict(status="fail", message=monthly_errors), 500
+
+        # append yearly data to overview
 
         yearly_medication_data, yearly_errors = schema.dumps(yearly_medication)
         yearly_medication_data_list = json.loads(yearly_medication_data)
@@ -543,8 +557,8 @@ class MedicationDetailOverview(Resource):
         
         overview.append(dict(yearly_medications=yearly_medications))
 
-        if monthly_errors:
-            return dict(status="fail", message=monthly_errors), 500
+        if yearly_errors:
+            return dict(status="fail", message=yearly_errors), 500
 
         return dict(status='success', data=dict(overview=overview))  
 
