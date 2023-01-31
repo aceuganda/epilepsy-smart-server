@@ -4,6 +4,6 @@ from .seizure import (SiezureView, SeizureDetailView, SeizureOverview, SeizureDe
 from .medicine import(MedicineDetailView, MedicineView)
 from .medication import(MedicationDetailView, MedicationView, MedicationOverview, MedicationDetailOverview, MedicationMissedReasons)
 from .resilience import(ResilienceView, ResilienceDetailView, ResilienceFeelingsOverview, ResilienceFeelingsDetailedOverview,
- ResilienceSocialEngagementDetailedOverview, ResilienceTreatmentScaleDetailedOverview, ResilienceUserFeelings)
+ ResilienceSocialEngagementDetailedOverview, ResilienceTreatmentScaleDetailedOverview, ResilienceUserFeelings, ResilienceUserSocialEngagementActivities)
 from .roles import RolesView, RolesDetailView
 from .user_role import UserRolesView
