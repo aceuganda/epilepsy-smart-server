@@ -11,6 +11,9 @@ from datetime import datetime, timedelta
 from sqlalchemy import and_
 from math import ceil
 import calendar
+from sqlalchemy.exc import SQLAlchemyError
+import sqlalchemy
+
 class ResilienceView(Resource):
 
     def post(self):
@@ -43,7 +46,17 @@ class ResilienceView(Resource):
         Getting All resiliences
         """
         resilience_schema = ResilienceSchema(many=True)
-        filter_after = datetime.today() - timedelta(days = 3)
+        resilience_schema2 = ResilienceSchema(many=False)
+
+        # get record with latest timestamp
+        latest_time = Resilience.query.filter_by(user_id=user_id).order_by(sqlalchemy.desc(Resilience.timestamp)).first()
+        time_data, errors= resilience_schema2.dumps(latest_time)
+        time_list = json.loads(time_data)
+        last_entry_time = time_list["timestamp"]
+        datetimeObj = datetime.strptime(last_entry_time, '%Y-%m-%dT%H:%M:%S.%f')
+        print(datetimeObj)
+        
+        filter_after = datetimeObj - timedelta(days = 3)
         print(filter_after)
         resiliences = Resilience.query.filter(Resilience.timestamp>=filter_after, Resilience.user_id==user_id).all()   
         if not resiliences:
