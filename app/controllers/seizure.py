@@ -11,7 +11,7 @@ import calendar
 
 
 class SiezureView(Resource):
-
+    @jwt_required
     def post(self):
         """
         Creating a Seizure Entry

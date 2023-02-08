@@ -15,7 +15,7 @@ from sqlalchemy.exc import SQLAlchemyError
 import sqlalchemy
 
 class ResilienceView(Resource):
-
+    @jwt_required
     def post(self):
         """
         Creating a Resilience Entry
@@ -58,7 +58,8 @@ class ResilienceView(Resource):
         
         filter_after = datetimeObj - timedelta(days = 3)
         print(filter_after)
-        resiliences = Resilience.query.filter(Resilience.timestamp>=filter_after, Resilience.user_id==user_id).all()   
+        resiliences = Resilience.query.filter(Resilience.timestamp>=filter_after, Resilience.user_id==user_id).all()  
+        print(resiliences) 
         if not resiliences:
             return dict(
                 status='fail',
@@ -104,17 +105,16 @@ class ResilienceView(Resource):
                 day_negative_feelings_count = len(deserialized_negative_feelings)
                 total_negative_feelings = total_negative_feelings + day_negative_feelings_count
                 overall_negative_feelings_list = overall_negative_feelings_list + deserialized_negative_feelings
-
         
-        three_day_social_activity_count = total
+        three_day_social_activity_count = int(total/counter)
         
-        if three_day_social_activity_count >0 and three_day_social_activity_count <=5:
+        if three_day_social_activity_count >0 and three_day_social_activity_count <=2:
             resiliences_data_list.append(dict(three_day_social_activity_count=three_day_social_activity_count))
             resiliences_data_list.append(dict(three_day_social_activity_comment="Low social engagement"))
-        elif three_day_social_activity_count >5 and three_day_social_activity_count <=9:
+        elif three_day_social_activity_count >2 and three_day_social_activity_count <=4:
             resiliences_data_list.append(dict(three_day_social_activity_count=three_day_social_activity_count))
             resiliences_data_list.append(dict(three_day_social_activity_comment="Medium social engagement"))
-        elif three_day_social_activity_count >=10:
+        elif three_day_social_activity_count >=5:
             resiliences_data_list.append(dict(three_day_social_activity_count=three_day_social_activity_count))
             resiliences_data_list.append(dict(three_day_social_activity_comment="High social engagement"))
 

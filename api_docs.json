@@ -273,6 +273,12 @@
           "produces": ["application/json"],
           "parameters": [
             {
+              "in": "header",
+              "name": "Authorization",
+              "required":  true,
+              "type": "string"
+            },
+            {
               "in": "body",
               "name": "Seizure params",
               "required": true,
@@ -398,6 +404,12 @@
         "consumes": ["application/json"],
         "produces": ["application/json"],
         "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required":  true,
+            "type": "string"
+          },
           {
             "in": "body",
             "name": "Medication params",
@@ -592,6 +604,12 @@
           "produces": ["application/json"],
           "parameters": [
             {
+              "in": "header",
+              "name": "Authorization",
+              "required":  true,
+              "type": "string"
+            },
+            {
               "in": "body",
               "name": "Medicine params",
               "required": true,
@@ -606,6 +624,9 @@
             },
             "401": {
               "description": "invalid input, object invalid"
+            },
+            "409": {
+              "description": "Conflict - record already exists"
             },
             "500": {
               "description": "Internal server error"
@@ -723,6 +744,12 @@
             "consumes": ["application/json"],
             "produces": ["application/json"],
             "parameters": [
+              {
+                "in": "header",
+                "name": "Authorization",
+                "required":  true,
+                "type": "string"
+              },
               {
                 "in": "body",
                 "name": "Resilience params",

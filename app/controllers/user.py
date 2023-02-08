@@ -64,8 +64,11 @@ class UserView(Resource):
 
         if errors:
             return dict(status="fail", message="Internal Server Error"), 500
+            
+        v_total_users = json.loads(users_data)
+        total_users = len(v_total_users)
 
-        return dict(status="success", data=dict(users=json.loads(users_data))), 200
+        return dict(status="success", data=dict(total_users=total_users, users=v_total_users)), 200
 
 
 class UserDetailView(Resource):

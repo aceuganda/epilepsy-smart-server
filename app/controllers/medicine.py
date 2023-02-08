@@ -8,7 +8,7 @@ from flask_bcrypt import Bcrypt
 
 
 class MedicineView(Resource):
-
+    @jwt_required
     def post(self):
         """
         Creating a Medicine Entry
@@ -21,6 +21,12 @@ class MedicineView(Resource):
 
         if errors:
             return dict(status='fail', message=errors), 400
+
+        existing_medicine = Medicine.find_first(name=validated_medicine_data["name"], user_id=validated_medicine_data["user_id"])
+
+        if existing_medicine:
+            return dict(status='fail',
+                        message=f'Medicine {validated_medicine_data["name"]} already exists for this user'), 409
 
         medicine = Medicine(**validated_medicine_data)
 
