@@ -37,7 +37,7 @@ def create_superuser(email, password, confirm_password):
             print(f'email {email} already in use')
             return
 
-        admin_user = User(email=email, username='super_admin', password=password, age=None, gender=None, age_of_onset=None, seizure_type=None, caregiver_name=None, caregiver_contact=None, institution=None, profileImage=None)
+        admin_user = User(email=email, username='super_admin', password=password, dob=None, gender=None, age_of_onset=None, seizure_type=None, caregiver_name=None, caregiver_contact=None, institution=None, profileImage=None)
         admin_user.roles.append(admin_role)
         admin_user.save()
         print("Admin user created successfully")

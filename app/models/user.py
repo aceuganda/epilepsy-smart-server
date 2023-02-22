@@ -16,7 +16,7 @@ class User(RootModel):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(256), unique=True)
     username = db.Column(db.String(256), nullable=False, default="")
-    age = db.Column(db.Integer, nullable=True)
+    # age = db.Column(db.Integer, nullable=True)
     gender = db.Column(db.String(256), nullable=True)
     age_of_onset = db.Column(db.Integer, nullable=True)
     seizure_type = db.Column(db.String(256), nullable=True)
@@ -28,12 +28,13 @@ class User(RootModel):
     date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
     seizures = db.relationship('Seizure', backref='user', lazy=True)
     medicines =db.relationship('Medicine', backref='user', lazy=True)
+    dob = db.Column(db.String, nullable=True)
 
-    def __init__(self, username, email, age, gender, age_of_onset, seizure_type, caregiver_name, caregiver_contact, institution, profileImage, password):
+    def __init__(self, username, email, gender, age_of_onset, seizure_type, caregiver_name, caregiver_contact, institution, profileImage, password, dob):
         """ initialize with email, age, gender, age_of_onset, seizure_type, caregiver_name, caregiver_contact, institution, profileImage, username and password """
         self.email = email
         self.username = username
-        self.age = age
+        self.dob = dob
         self.gender= gender
         self.age_of_onset = age_of_onset
         self.seizure_type = seizure_type

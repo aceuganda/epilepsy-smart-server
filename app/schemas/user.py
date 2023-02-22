@@ -6,7 +6,7 @@ class UserSchema(Schema):
     id = fields.Integer(dump_only=True)
     email = fields.Email()
     username = fields.String()
-    age = fields.Integer()
+    dob = fields.String()
     gender = fields.String()
     age_of_onset = fields.Integer()
     seizure_type = fields.String()

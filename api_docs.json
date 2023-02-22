@@ -1343,7 +1343,7 @@
     "definitions": {
       "user_signup_credentials": {
         "type": "object",
-        "required": ["username", "password", "email", "age", "gender", "age_of_onset", "seizure_type", "caregiver_name", "caregiver_contact", "institution", "profileImage"],
+        "required": ["username", "password", "email", "dob", "gender", "age_of_onset", "seizure_type", "caregiver_name", "caregiver_contact", "institution", "profileImage"],
         "properties": {
           "username": {
             "type": "string",
@@ -1357,9 +1357,9 @@
             "type": "string",
             "example": "password"
           },
-          "age": {
-            "type": "number",
-            "example": 20
+          "dob": {
+            "type": "string",
+            "example": "2020-01-12"
           },
           "gender": {
             "type": "string",
