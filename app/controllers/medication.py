@@ -10,7 +10,7 @@ from math import ceil
 import calendar
 
 class MedicationView(Resource):
-
+    @jwt_required
     def post(self):
         """
         Creating a Medication Entry
@@ -306,7 +306,6 @@ class MedicationOverview(Resource):
 
         monthly_medication_data, monthly_errors = schema.dumps(monthly_medication)
         monthly_medication_data_list = json.loads(monthly_medication_data)
-        print(monthly_medication_data_list)
 
         for data in monthly_medication_data_list:
             timestamp = data['timestamp']

@@ -524,5 +524,86 @@ class SeizureDetailOverview(Resource):
 
         return dict(status='success', data=dict(overview=overview)), 200    
 
+class SeizureUserMetrics(Resource):
+    @jwt_required
+    def get(self):
+        """
+        Getting the number of user seizures overtime
+        """
+        seizure_metrics = []
 
+        schema = SeizureSchema(many=True)
 
+        # weekly seizures
+        weekly_seizures = {
+            "total_seizures": 0
+        }
+
+        # monthly seizures
+        monthly_seizures = {
+            "total_seizures": 0
+        }
+
+        # yearly seizures
+        yearly_seizures = {
+            "total_seizures": 0
+        }
+
+        # get weekly data
+        weekly_filter = datetime.today() - timedelta(days = 7)
+
+        weekly_seizure = Seizure.query.filter(Seizure.timestamp > weekly_filter).all()
+
+        # get monthly data
+        monthly_filter = datetime.today() - timedelta(days = 31)
+
+        monthly_seizure = Seizure.query.filter(Seizure.timestamp > monthly_filter).all()
+
+        # get annual data
+        yearly_filter = datetime.today() - timedelta(days = 365)
+
+        yearly_seizure = Seizure.query.filter(Seizure.timestamp > yearly_filter).all()
+        
+        if (not weekly_seizure and not monthly_seizure and not yearly_seizure):
+            return dict(status="fail", message=f"No seizure data found"), 404
+
+        # append weekly data to seizure_metrics
+
+        weekly_seizure_data, weekly_errors = schema.dumps(weekly_seizure)
+        weekly_seizure_data_list = json.loads(weekly_seizure_data)
+
+        for data in weekly_seizure_data_list:
+            weekly_seizures["total_seizures"] += 1
+        
+        seizure_metrics.append(dict(weekly_seizures=weekly_seizures))
+
+        if weekly_errors:
+            return dict(status="fail", message=weekly_errors), 500
+
+        # append monthly data to seizure_metrics
+
+        monthly_seizure_data, monthly_errors = schema.dumps(monthly_seizure)
+        monthly_seizure_data_list = json.loads(monthly_seizure_data)
+
+        for data in monthly_seizure_data_list:
+            monthly_seizures["total_seizures"] += 1
+        
+        seizure_metrics.append(dict(monthly_seizures=monthly_seizures))
+
+        if monthly_errors:
+            return dict(status="fail", message=monthly_errors), 500
+        
+        # append yearly data to seizure_metrics
+
+        yearly_seizure_data, yearly_errors = schema.dumps(yearly_seizure)
+        yearly_seizure_data_list = json.loads(yearly_seizure_data)
+
+        for data in yearly_seizure_data_list:
+            yearly_seizures["total_seizures"] += 1
+        
+        seizure_metrics.append(dict(yearly_seizures=yearly_seizures))
+
+        if yearly_errors:
+            return dict(status="fail", message=yearly_errors), 500
+
+        return dict(status='success', data=dict(seizure_metrics=seizure_metrics))
