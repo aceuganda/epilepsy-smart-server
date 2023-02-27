@@ -397,6 +397,40 @@
         }
       }
     },
+    "/seizure/{user_id}/metrics": {
+      "get": {
+        "tags": ["seizures"],
+        "summary": "Gets the number of user seizures overtime : Admin dashboard",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get the number of user seizures"
+          },
+          "401": {
+            "description": "Invalid input, object invalid"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Sserver error"
+          }
+        }
+      }
+    },
     "/medications": {
       "post": {
         "tags": ["medication_records"],
@@ -1437,7 +1471,7 @@
           ,
           "seizure_time_of_day": {
             "type": "string",
-            "example": "morning/aftenoon/night"
+            "example": "morning/afternoon/night"
           }
           ,
           "lost_awareness": {
