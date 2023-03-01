@@ -51,6 +51,8 @@ class ResilienceView(Resource):
         # get record with latest timestamp
         latest_time = Resilience.query.filter_by(user_id=user_id).order_by(sqlalchemy.desc(Resilience.timestamp)).first()
         time_data, errors= resilience_schema2.dumps(latest_time)
+        print("...............................................................................")
+        print(time_data)
         time_list = json.loads(time_data)
         last_entry_time = time_list["timestamp"]
         datetimeObj = datetime.strptime(last_entry_time, '%Y-%m-%dT%H:%M:%S.%f')
@@ -73,8 +75,8 @@ class ResilienceView(Resource):
 
         
         resiliences_data_list = []
+        new_resiliences_data_list = json.loads(resiliences_data)
         print(resiliences_data_list)
-        print(resiliences_data_list[0]["treatment_scale_by_other"])
 
         #count social engagement activities for 3 days
         total =0
@@ -84,7 +86,8 @@ class ResilienceView(Resource):
         total_negative_feelings = 0
         overall_positive_feelings_list = []
         overall_negative_feelings_list = []
-        for engagement in resiliences_data_list:
+
+        for engagement in new_resiliences_data_list:
             deserialized_social_engagement = json.loads(engagement["engagement_activities"][0])
             day_social_activity_count = len(deserialized_social_engagement)
             total = total + day_social_activity_count
