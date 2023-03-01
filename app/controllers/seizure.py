@@ -526,7 +526,7 @@ class SeizureDetailOverview(Resource):
 
 class SeizureUserMetrics(Resource):
     @jwt_required
-    def get(self):
+    def get(self, user_id):
         """
         Getting the number of user seizures overtime
         """
@@ -552,17 +552,17 @@ class SeizureUserMetrics(Resource):
         # get weekly data
         weekly_filter = datetime.today() - timedelta(days = 7)
 
-        weekly_seizure = Seizure.query.filter(Seizure.timestamp > weekly_filter).all()
+        weekly_seizure = Seizure.query.filter(Seizure.timestamp > weekly_filter, Seizure.user_id==user_id).all()
 
         # get monthly data
         monthly_filter = datetime.today() - timedelta(days = 31)
 
-        monthly_seizure = Seizure.query.filter(Seizure.timestamp > monthly_filter).all()
+        monthly_seizure = Seizure.query.filter(Seizure.timestamp > monthly_filter, Seizure.user_id==user_id).all()
 
         # get annual data
         yearly_filter = datetime.today() - timedelta(days = 365)
 
-        yearly_seizure = Seizure.query.filter(Seizure.timestamp > yearly_filter).all()
+        yearly_seizure = Seizure.query.filter(Seizure.timestamp > yearly_filter, Seizure.user_id==user_id).all()
         
         if (not weekly_seizure and not monthly_seizure and not yearly_seizure):
             return dict(status="fail", message=f"No seizure data found"), 404
