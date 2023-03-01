@@ -63,16 +63,16 @@ class ResilienceView(Resource):
         if not resiliences:
             return dict(
                 status='fail',
-                message=f'No resilience data found'
+                message="No resilience data found"
             ), 404
 
         resiliences_data, errors = resilience_schema.dumps(resiliences)
         print(resiliences_data)
-
-
+        if not resiliences_data:
+            return dict(status="fail", message="Resilience data not found"), 404
 
         
-        resiliences_data_list = json.loads(resiliences_data)
+        resiliences_data_list = []
         print(resiliences_data_list)
         print(resiliences_data_list[0]["treatment_scale_by_other"])
 
