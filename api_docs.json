@@ -1371,7 +1371,75 @@
             }
           }
         }
-
+      },
+      "/gratefuls": {
+        "post": {
+          "tags": ["gratefuls"],
+          "summary": "Enter a new grateful record",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required":  true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "Gratefuls params",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/gratefuls"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully added grateful record"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
+          }
+        }
+      },
+      "/gratefuls/{user_id}":{
+        "get": {
+          "tags": ["gratefuls"],
+          "summary": "Gets all Gratefuls for a user",
+          "produces": ["application/json"],
+          "parameters":[
+            {
+              "in": "path",
+              "name": "user_id",
+              "required": true
+            },
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully gets Gratefuls for single user"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
       }
     },
     "definitions": {
@@ -1598,7 +1666,6 @@
           "example": "app_user/clinician"
         }
       }
-
   },
   "user_role": {
     "type": "object",
@@ -1609,7 +1676,19 @@
         "example": 1
       }
     }
-
-}
-
+  },
+  "gratefuls": {
+    "type": "object",
+    "required": ["user_id", "grateful"],
+    "properties": {
+      "user_id": {
+        "type": "number",
+        "example": 1
+      },
+      "grateful": {
+        "type": "string",
+        "example": "I am grateful to always have food to eat when I want it"
+      }
+    }
+  }
   }}

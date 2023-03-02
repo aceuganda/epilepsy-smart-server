@@ -5,3 +5,4 @@ from .medication import MedicationSchema
 from .resilience import ResilienceSchema
 from .role import RoleSchema
 from .user_role import UserRoleSchema
+from .gratefuls import GratefulSchema
