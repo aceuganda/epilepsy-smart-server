@@ -7,6 +7,7 @@ from app.models.root_model import RootModel
 
 from app.models.seizure import Seizure
 from app.models.medicine import Medicine
+from app.models.journal import Journal
 class User(RootModel):
     """ user table definition """
 
@@ -29,6 +30,8 @@ class User(RootModel):
     seizures = db.relationship('Seizure', backref='user', lazy=True)
     medicines =db.relationship('Medicine', backref='user', lazy=True)
     dob = db.Column(db.String, nullable=True)
+    journals = db.relationship('Journal', backref='user', lazy=True)
+    gratefuls = db.relationship('Grateful', backref='user', lazy=True)
 
     def __init__(self, username, email, gender, age_of_onset, seizure_type, caregiver_name, caregiver_contact, institution, profileImage, password, dob):
         """ initialize with email, age, gender, age_of_onset, seizure_type, caregiver_name, caregiver_contact, institution, profileImage, username and password """
