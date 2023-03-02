@@ -1,7 +1,7 @@
 from flask_restful import Api
 from app.controllers import (
     IndexView, UserView, UserDetailView, UserLoginView, ResetPassword, SiezureView, SeizureDetailView, SeizureOverview, SeizureDetailOverview, SeizureUserMetrics, MedicationView, MedicationDetailView, MedicationOverview, MedicationMissedReasons, MedicationDetailOverview, MedicineView, MedicineDetailView
-    , ResilienceView, ResilienceDetailView, RolesView, RolesDetailView, UserRolesView, ClinicianView, ResilienceFeelingsOverview, ResilienceFeelingsDetailedOverview, ResilienceSocialEngagementDetailedOverview, ResilienceTreatmentScaleDetailedOverview, ResilienceUserFeelings, ResilienceUserSocialEngagementActivities)
+    , ResilienceView, ResilienceDetailView, RolesView, RolesDetailView, UserRolesView, ClinicianView, ResilienceFeelingsOverview, ResilienceFeelingsDetailedOverview, ResilienceSocialEngagementDetailedOverview, ResilienceTreatmentScaleDetailedOverview, ResilienceUserFeelings, ResilienceUserSocialEngagementActivities, GratefulsView)
 
 
 api = Api()
@@ -49,6 +49,10 @@ api.add_resource(ResilienceSocialEngagementDetailedOverview, '/resilience/<strin
 api.add_resource(ResilienceTreatmentScaleDetailedOverview, '/resilience/<string:user_id>/peer_treatment')
 api.add_resource(ResilienceUserFeelings, '/resilience/<string:user_id>/feelings')
 api.add_resource(ResilienceUserSocialEngagementActivities, '/resilience/<string:user_id>/social_engagement_activities')
+
+# Gratesfuls routes
+api.add_resource(GratefulsView, '/gratefuls', endpoint='grateful_records')
+api.add_resource(GratefulsView, '/gratefuls/<string:user_id>')
 
 # Roles routes
 api.add_resource(RolesView, '/roles', endpoint='roles')

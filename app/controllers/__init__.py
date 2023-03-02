@@ -7,3 +7,4 @@ from .resilience import(ResilienceView, ResilienceDetailView, ResilienceFeelings
  ResilienceSocialEngagementDetailedOverview, ResilienceTreatmentScaleDetailedOverview, ResilienceUserFeelings, ResilienceUserSocialEngagementActivities)
 from .roles import RolesView, RolesDetailView
 from .user_role import UserRolesView
+from .gratefuls import (GratefulsView)
