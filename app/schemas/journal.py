@@ -8,3 +8,4 @@ class JournalSchema(Schema):
         "required": "user_id is required" })
     title = fields.String()
     notes = fields.String()
+    timestamp = fields.Date(dump_only=True)

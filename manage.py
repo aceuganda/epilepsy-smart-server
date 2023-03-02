@@ -16,6 +16,7 @@ from app.models.activities import Activity
 from app.models.role import Role
 from app.models.user_role import UserRole
 from app.helpers.admin import create_superuser, create_default_roles
+from app.models.journal import Journal
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)

@@ -8,3 +8,4 @@ from .resilience import(ResilienceView, ResilienceDetailView, ResilienceFeelings
 from .roles import RolesView, RolesDetailView
 from .user_role import UserRolesView
 from .gratefuls import (GratefulsView)
+from .journal import JournalsView

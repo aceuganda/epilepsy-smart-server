@@ -4,10 +4,10 @@ from ..models import db
 from app.models.root_model import RootModel
 
 class Grateful(RootModel):
-    """ medicine table definition """
+    """ grateful table definition """
 
-    _tablename_ = "medicine"
-     # fields of the medicine table
+    _tablename_ = "gratefuls"
+    
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.ForeignKey('user.id'), nullable=False)
     grateful = db.Column(db.String(256), nullable=False)
