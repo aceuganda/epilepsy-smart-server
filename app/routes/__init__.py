@@ -67,4 +67,4 @@ api.add_resource(UserRolesView, '/user/<string:user_id>/roles',
 
 # Gratesfuls routes
 api.add_resource(JournalsView, '/journals', endpoint='journals_records')
-api.add_resource(JournalsView, '/joournals/<string:user_id>')
+api.add_resource(JournalsView, '/journals/<string:user_id>')
