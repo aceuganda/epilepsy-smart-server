@@ -1441,6 +1441,81 @@
           }
         }
       },
+      "/gratefuls/{grateful_id}": {
+        "patch": {
+          "tags": ["gratefuls"],
+          "summary": "Updates a user's gratefuls",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "grateful_id",
+              "required": true
+            },
+            {
+              "in": "body",
+              "name": "Gratefuls params",
+              "required": false,
+              "schema": {
+                "$ref": "#/definitions/grateful"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully updates user grateful"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        },
+        "delete": {
+          "tags": ["gratefuls"],
+          "summary": "Delete a grateful",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "grateful_id",
+              "required": true
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully deleted grateful"
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
       "/journals/{user_id}":{
         "get": {
           "tags": ["joournals"],
@@ -1754,6 +1829,15 @@
         "type": "number",
         "example": 1
       },
+      "grateful": {
+        "type": "string",
+        "example": "I am grateful to always have food to eat when I want it"
+      }
+    }
+  },
+  "grateful": {
+    "type": "object",
+    "properties": {
       "grateful": {
         "type": "string",
         "example": "I am grateful to always have food to eat when I want it"

@@ -54,3 +54,57 @@ class GratefulsView(Resource):
 
         return dict(status="success", data=dict(gratefuls=json.loads(gratefuls_data))), 200
 
+class GratefulsDetailView(Resource):
+    @jwt_required
+    def patch(self, grateful_id):
+        """
+        Update user grateful
+        """
+
+        grateful_schema = GratefulSchema(partial=True)
+
+        update_data = request.get_json()
+
+        validated_update_data, errors = grateful_schema.load(update_data)
+
+        if errors:
+            return dict(status="fail", message=errors), 400
+
+        grateful = Grateful.get_by_id(grateful_id)
+
+        if not grateful:
+            return dict(
+                status="fail",
+                message=f"Grateful with id {grateful_id} not found"
+            ), 404
+
+        updated_grateful = Grateful.update(grateful, **validated_update_data)
+
+        if not updated_grateful:
+            return dict(status='fail', message='Internal Server Error'), 500
+
+        return dict(
+            status="success",
+            message=f"Grateful updated successfully"
+        ), 200
+
+    @jwt_required
+    def delete(self, grateful_id):
+        """
+        Delete a user grateful
+        """
+
+        grateful = Grateful.get_by_id(grateful_id)
+
+        if not grateful:
+            return dict(
+                status="fail",
+                message=f"Grateful with id {grateful_id} not found"
+            ), 404
+
+        deleted_grateful = grateful.delete()
+
+        if not deleted_grateful:
+            return dict(status='fail', message='Internal Server Error'), 500
+
+        return dict(status='success', message="Successfully deleted"), 200
