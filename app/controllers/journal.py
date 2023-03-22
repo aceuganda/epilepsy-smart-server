@@ -3,7 +3,6 @@ from flask_restful import Resource, request
 
 from app.schemas import JournalSchema
 from app.models.journal import Journal
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
 from app.helpers.admin import is_owner_or_admin
@@ -57,6 +56,25 @@ class JournalsView(Resource):
 
 
 class JournalsDetailView(Resource):
+    @jwt_required
+    def get(self, journal_id):
+        """
+        Getting a particular journal
+        """
+        journal_schema = JournalSchema(many=False)
+
+        journal = Journal.get_by_id(journal_id)
+
+        if not journal:
+            return dict(status='fail', message=f'No journal data'), 404
+        
+        journal_data, errors = journal_schema.dumps(journal)
+
+        if errors:
+            return dict(status="fail", message="Internal Server Error"), 500
+        
+        return dict(status="success", data=dict(journal=json.loads(journal_data)))
+    
     @jwt_required
     def patch(self, journal_id):
         """

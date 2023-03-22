@@ -1441,7 +1441,39 @@
           }
         }
       },
-      "/gratefuls/{grateful_id}": {
+      "/grateful/{grateful_id}": {
+        "get": {
+          "tags": ["gratefuls"],
+          "summary": "Gets a single grateful",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "grateful_id",
+              "required": true
+            },
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully gets a single grateful"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        },
         "patch": {
           "tags": ["gratefuls"],
           "summary": "Updates a user's gratefuls",
@@ -1550,7 +1582,39 @@
           }
         }
       },
-      "/journals/{journal_id}":{
+      "/journal/{journal_id}":{
+        "get": {
+          "tags": ["journals"],
+          "summary": "Gets a single journal",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "journal_id",
+              "required": true
+            },
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully gets a single journal"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        },
         "patch": {
           "tags": ["journals"],
           "summary": "Updates a user's journals",

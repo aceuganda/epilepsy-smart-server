@@ -53,7 +53,7 @@ api.add_resource(ResilienceUserSocialEngagementActivities, '/resilience/<string:
 # Gratesfuls routes
 api.add_resource(GratefulsView, '/gratefuls', endpoint='grateful_records')
 api.add_resource(GratefulsView, '/gratefuls/<string:user_id>')
-api.add_resource(GratefulsDetailView, '/gratefuls/<string:grateful_id>')
+api.add_resource(GratefulsDetailView, '/grateful/<string:grateful_id>')
 
 
 # Roles routes
@@ -68,4 +68,4 @@ api.add_resource(UserRolesView, '/user/<string:user_id>/roles',
 # Journal routes
 api.add_resource(JournalsView, '/journals', endpoint='journals_records')
 api.add_resource(JournalsView, '/journals/<string:user_id>')
-api.add_resource(JournalsDetailView, '/journals/<string:journal_id>')
+api.add_resource(JournalsDetailView, '/journal/<string:journal_id>')

@@ -80,3 +80,4 @@ def is_current_or_admin(route_user_id, auth_user_id, user_roles):
     is_current = route_user_id == auth_user_id
 
     return is_admin or is_current
+
