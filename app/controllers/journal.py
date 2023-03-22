@@ -59,14 +59,14 @@ class JournalsDetailView(Resource):
     @jwt_required
     def get(self, journal_id):
         """
-        Getting a particular grateful
+        Getting a particular journal
         """
         journal_schema = JournalSchema(many=False)
 
         journal = Journal.get_by_id(journal_id)
 
         if not journal:
-            return dict(status='fail', message=f'No grateful data'), 404
+            return dict(status='fail', message=f'No journal data'), 404
         
         journal_data, errors = journal_schema.dumps(journal)
 
