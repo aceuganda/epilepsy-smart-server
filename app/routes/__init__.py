@@ -1,7 +1,7 @@
 from flask_restful import Api
 from app.controllers import (
     IndexView, UserView, UserDetailView, UserLoginView, ResetPassword, SiezureView, SeizureDetailView, SeizureOverview, SeizureDetailOverview, SeizureUserMetrics, MedicationView, MedicationDetailView, MedicationOverview, MedicationMissedReasons, MedicationDetailOverview, MedicineView, MedicineDetailView
-    , ResilienceView, ResilienceDetailView, RolesView, RolesDetailView, UserRolesView, ClinicianView, ResilienceFeelingsOverview, ResilienceFeelingsDetailedOverview, ResilienceSocialEngagementDetailedOverview, ResilienceTreatmentScaleDetailedOverview, ResilienceUserFeelings, ResilienceUserSocialEngagementActivities, GratefulsView, GratefulsDetailView, JournalsView)
+    , ResilienceView, ResilienceDetailView, RolesView, RolesDetailView, UserRolesView, ClinicianView, ResilienceFeelingsOverview, ResilienceFeelingsDetailedOverview, ResilienceSocialEngagementDetailedOverview, ResilienceTreatmentScaleDetailedOverview, ResilienceUserFeelings, ResilienceUserSocialEngagementActivities, GratefulsView, GratefulsDetailView, JournalsView, JournalsDetailView)
 
 
 api = Api()
@@ -68,3 +68,4 @@ api.add_resource(UserRolesView, '/user/<string:user_id>/roles',
 # Journal routes
 api.add_resource(JournalsView, '/journals', endpoint='journals_records')
 api.add_resource(JournalsView, '/journals/<string:user_id>')
+api.add_resource(JournalsDetailView, '/journals/<string:journal_id>')

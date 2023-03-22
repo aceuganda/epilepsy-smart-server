@@ -5,7 +5,8 @@ from app.schemas import JournalSchema
 from app.models.journal import Journal
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_bcrypt import Bcrypt
-
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
+from app.helpers.admin import is_owner_or_admin
 
 class JournalsView(Resource):
     @jwt_required
@@ -54,3 +55,68 @@ class JournalsView(Resource):
 
         return dict(status="success", data=dict(journals=json.loads(journals_data))), 200
 
+
+class JournalsDetailView(Resource):
+    @jwt_required
+    def patch(self, journal_id):
+        """
+        Update user journal
+        """
+        current_user_id = get_jwt_identity()
+        current_user_roles = get_jwt_claims()['roles'] 
+        journal_schema = JournalSchema(partial=True)
+
+        update_data = request.get_json()
+
+        validated_update_data, errors = journal_schema.load(update_data)
+
+        if errors:
+            return dict(status="fail", message=errors), 400
+
+        journal = Journal.get_by_id(journal_id)
+
+        if not journal:
+            return dict(
+                status="fail",
+                message=f"Journal with id {journal_id} not found"
+            ), 404
+
+        if not is_owner_or_admin(journal, current_user_id, current_user_roles):
+            return dict(status='fail', message='unauthorised'), 403
+
+        updated_journal = Journal.update(journal, **validated_update_data)
+
+        if not updated_journal:
+            return dict(status='fail', message='Internal Server Error'), 500
+
+        return dict(
+            status="success",
+            message=f"Journal updated successfully"
+        ), 200
+
+
+
+    @jwt_required
+    def delete(self, journal_id):
+        """
+        Delete a user journal
+        """
+        current_user_id = get_jwt_identity()
+        current_user_roles = get_jwt_claims()['roles']        
+        journal = Journal.get_by_id(journal_id)
+
+        if not journal:
+            return dict(
+                status="fail",
+                message=f"Journal with id {journal_id} not found"
+            ), 404
+
+        if not is_owner_or_admin(journal, current_user_id, current_user_roles):
+            return dict(status='fail', message='unauthorised'), 403
+
+        deleted_journal = journal.delete()
+
+        if not deleted_journal:
+            return dict(status='fail', message='Internal Server Error'), 500
+
+        return dict(status='success', message="Successfully deleted"), 200

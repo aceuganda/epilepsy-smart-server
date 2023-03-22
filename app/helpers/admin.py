@@ -66,7 +66,7 @@ def create_default_roles():
 def is_owner_or_admin(resource, user_id, user_roles):
     is_admin = has_role(user_roles, 'administrator')
     if resource.owner.id:
-        is_owner = str(resource.owner.id) == str(user_id)
+        is_owner = str(resource.user_id) == str(user_id)
     else:
         is_owner = False
 

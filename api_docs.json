@@ -1518,7 +1518,7 @@
       },
       "/journals/{user_id}":{
         "get": {
-          "tags": ["joournals"],
+          "tags": ["journals"],
           "summary": "Gets all journals for a user",
           "produces": ["application/json"],
           "parameters":[
@@ -1549,6 +1549,82 @@
             }
           }
         }
+      },
+      "/journals/{journal_id}":{
+        "patch": {
+          "tags": ["journals"],
+          "summary": "Updates a user's journals",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "journal_id",
+              "required": true
+            },
+            {
+              "in": "body",
+              "name": "Journal params",
+              "required": false,
+              "schema": {
+                "$ref": "#/definitions/journal"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully updates user journal"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        },
+        "delete": {
+          "tags": ["journals"],
+          "summary": "Delete a journal for a user",
+          "produces": ["application/json"],
+          "parameters":[
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "journal_id",
+              "required": true
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully deleted journal"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+        
       },
       "/journals": {
         "post": {
