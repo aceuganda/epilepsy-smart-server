@@ -1,4 +1,4 @@
-from .user import UserSchema, UserLoginSchema, ClinicianSchema
+from .user import UserSchema, UserLoginSchema, ClinicianSchema, UserPasswordSchema
 from .seizure import SeizureSchema
 from .medicine import MedicineSchema
 from .medication import MedicationSchema

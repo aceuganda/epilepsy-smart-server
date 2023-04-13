@@ -143,6 +143,46 @@
           }
         }
       },
+      "/users/{user_id}/change_password": {
+        "patch": {
+          "tags": ["users"],
+          "summary": "Change User Password",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "user_id",
+              "required": true
+            },
+            {
+              "in": "body",
+              "name": "User params",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/user_password_update_credentials"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully Changed User Password"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
       "/users/login": {
         "post": {
           "tags": ["users"],
@@ -1788,6 +1828,20 @@
           "password": {
             "type": "string",
             "example": "password"
+          }
+        }
+      },
+      "user_password_update_credentials": {
+        "type": "object",
+        "required": ["current_password", "new_password"],
+        "properties": {
+          "current_password": {
+            "type": "string",
+            "example": "password1"
+          },
+          "new_password": {
+            "type": "string",
+            "example": "password2"
           }
         }
       },
