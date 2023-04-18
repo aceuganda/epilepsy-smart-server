@@ -13,6 +13,7 @@ api.add_resource(IndexView, '/')
 api.add_resource(UserView, '/users', endpoint='users')
 api.add_resource(UserDetailView, '/users/<string:user_id>',
                  endpoint='user')
+api.add_resource(UserDetailView, '/users/<string:user_id>/change_password')
 api.add_resource(UserLoginView, '/users/login', endpoint='user_login')
 api.add_resource(ResetPassword, '/users/reset_password',
                  endpoint='reset_password')

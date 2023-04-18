@@ -1,7 +1,7 @@
 import json
 from flask_restful import Resource, request
 
-from app.schemas import UserSchema, UserLoginSchema, ClinicianSchema
+from app.schemas import UserSchema, UserLoginSchema, ClinicianSchema, UserPasswordSchema
 from app.models.user import User
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_bcrypt import Bcrypt
@@ -119,6 +119,40 @@ class UserDetailView(Resource):
             return dict(status='fail', message='Internal Server Error'), 500
 
         return dict(status="success", message="User updated successfully"), 200
+
+    @jwt_required
+    def patch(self, user_id):
+        """
+        Change a single users password
+        """
+        schema = UserPasswordSchema()
+
+        change_password_data = request.get_json()
+
+        validated_change_password_data, errors = schema.load(change_password_data)
+
+        if errors:
+            return dict(status="fail", message=errors), 400
+
+        user = User.get_by_id(user_id)
+
+        if not user:
+            return dict(status="fail", message=f"User with id {user_id} not found"), 404
+    
+        current_password = validated_change_password_data['current_password']
+        new_password = validated_change_password_data['new_password']
+
+        if user.password_is_valid(current_password):
+            password_hash = Bcrypt().generate_password_hash(new_password).decode()
+
+            updated_user = User.update(user, password=password_hash)
+
+            if not updated_user:
+                return dict(status='fail', message='Internal Server Error'), 500
+        else:
+            return dict(status='fail', message="current password is wrong"), 401
+
+        return dict(status="success", message="Password updated successfully"), 200
 
     @admin_required
     def delete(self, user_id):
