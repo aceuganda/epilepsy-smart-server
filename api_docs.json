@@ -776,7 +776,40 @@
               "description": "Server error"
             }
           }
-        }},
+        },
+        "delete": {
+          "tags": ["medicine"],
+          "summary": "Delete a user's medicine",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "path",
+              "name": "medicine_id",
+              "required": true
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Successfully deleted medicine"
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
         "/resiliences/{user_id}": {
           "get": {
             "tags": ["resilience_tracking"],

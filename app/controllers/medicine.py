@@ -3,8 +3,9 @@ from flask_restful import Resource, request
 
 from app.schemas import MedicineSchema
 from app.models.medicine import Medicine
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
 from flask_bcrypt import Bcrypt
+from app.helpers.admin import is_owner_or_admin
 
 
 class MedicineView(Resource):
@@ -81,3 +82,28 @@ class MedicineDetailView(Resource):
             return dict(status="fail", message=errors), 500
 
         return dict(status='success', data=dict(medicine=json.loads(medicine_data))), 200
+    
+    @jwt_required
+    def delete(self, medicine_id):
+        """
+        Delete a user medicine
+        """
+        current_user_id = get_jwt_identity()
+        current_user_roles = get_jwt_claims()['roles']
+        medicine = Medicine.get_by_id(medicine_id)
+
+        if not medicine:
+            return dict(
+                status="fail",
+                message=f"Grateful with id {medicine_id} not found"
+            ), 404
+        
+        if not is_owner_or_admin(medicine, current_user_id, current_user_roles):
+            return dict(status='fail', message='unauthorised'), 403
+
+        deleted_medicine = medicine.delete()
+
+        if not deleted_medicine:
+            return dict(status='fail', message='Internal Server Error'), 500
+
+        return dict(status='success', message="Successfully deleted"), 200
