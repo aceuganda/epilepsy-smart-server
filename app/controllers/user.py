@@ -254,37 +254,50 @@ class UserLoginView(Resource):
         return dict(status='fail', message="login failed"), 401
 
 
-class ResetPassword(Resource):
-    def post(self):
-        """
-        Update a single user
-        """
+class ResetPasswordView(Resource):
 
-        # To do check if user is admin
-        schema = UserLoginSchema()
+    def post(self, token):
 
-        update_data = request.get_json()
+        password_schema = UserSchema(only=("password",))
 
-        validated_update_data, errors = schema.load(update_data)
+        secret = current_app.config["SECRET_KEY"]
+        salt = current_app.config["PASSWORD_SALT"]
+
+        request_data = request.get_json()
+        validated_data, errors = password_schema.load(request_data)
 
         if errors:
-            return dict(status="fail", message=errors), 400
+            return dict(status='fail', message=errors), 400
 
-        user = User.find_first(email=validated_update_data["email"])
+        password = validated_data['password']
+
+        hashed_password = Bcrypt().generate_password_hash(password).decode()
+
+        email = validate_token(token, secret, salt)
+
+        if not email:
+            return dict(status='fail', message="invalid token"), 401
+
+        user = User.find_first(**{'email': email})
 
         if not user:
-            return dict(status="fail", message=f"User with email {validated_update_data['email']} not found"), 404
+            return dict(
+                status="fail",
+                message=f'user with email {email} not found'
+            ), 404
 
-        password_hash = Bcrypt().generate_password_hash(
-            validated_update_data["password"]).decode()
+        if not user.verified:
+            return dict(
+                status='fail', message=f'email {email} is not verified'), 400
+        user.password = hashed_password
 
-        updated_user = User.update(
-            user, password=password_hash)
+        user_saved = user.save()
 
-        if not updated_user:
-            return dict(status='fail', message='Internal Server Error'), 500
+        if not user_saved:
+            return dict(status='fail', message='internal server error'), 500
 
-        return dict(status="success", message="User password reset successfully"), 200
+        return dict(
+            status='success', message='password reset successfully'), 200
 
 
 
