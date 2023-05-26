@@ -1,7 +1,8 @@
 from flask_restful import Api
 from app.controllers import (
     IndexView, UserView, UserDetailView, UserLoginView, ResetPassword, SiezureView, SeizureDetailView, SeizureOverview, SeizureDetailOverview, SeizureUserMetrics, MedicationView, MedicationDetailView, MedicationOverview, MedicationMissedReasons, MedicationDetailOverview, MedicineView, MedicineDetailView
-    , ResilienceView, ResilienceDetailView, RolesView, RolesDetailView, UserRolesView, ClinicianView, ResilienceFeelingsOverview, ResilienceFeelingsDetailedOverview, ResilienceSocialEngagementDetailedOverview, ResilienceTreatmentScaleDetailedOverview, ResilienceUserFeelings, ResilienceUserSocialEngagementActivities, GratefulsView, GratefulsDetailView, JournalsView, JournalsDetailView)
+    , ResilienceView, ResilienceDetailView, RolesView, RolesDetailView, UserRolesView, ClinicianView, ResilienceFeelingsOverview, ResilienceFeelingsDetailedOverview, ResilienceSocialEngagementDetailedOverview, ResilienceTreatmentScaleDetailedOverview, ResilienceUserFeelings, ResilienceUserSocialEngagementActivities, GratefulsView, GratefulsDetailView, JournalsView, 
+    JournalsDetailView, UserEmailVerificationView, UserEmailVerificationView)
 
 
 api = Api()
@@ -18,6 +19,8 @@ api.add_resource(UserLoginView, '/users/login', endpoint='user_login')
 api.add_resource(ResetPassword, '/users/reset_password',
                  endpoint='reset_password')
 api.add_resource(ClinicianView, '/users/register_clinician', endpoint='clinicians')
+api.add_resource(UserEmailVerificationView, '/users/verify/<string:token>')
+api.add_resource(EmailVerificationRequest, '/users/verify')
 
 #Seizure routes
 api.add_resource(SiezureView, '/seizures', endpoint='seizures')

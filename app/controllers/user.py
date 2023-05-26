@@ -1,12 +1,15 @@
 import json
 from flask_restful import Resource, request
-
+import os
 from app.schemas import UserSchema, UserLoginSchema, ClinicianSchema, UserPasswordSchema
 from app.models.user import User
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_bcrypt import Bcrypt
 from app.models.role import Role 
 from app.helpers.decorators import admin_required
+from app.helpers.confirmation import send_verification
+from flask import current_app
+from app.helpers.token import validate_token
 
 class UserView(Resource):
 
@@ -41,6 +44,37 @@ class UserView(Resource):
 
         if not saved_user:
             return dict(status='fail', message='Internal Server Error'), 500
+        
+        email = validated_user_data.get('email', None)
+        client_base_url = os.getenv(
+            'CLIENT_BASE_URL',
+            'https://smartapp.aceuganda.org/users'
+        )
+
+        # To do change to a frontend url
+        verification_url = f"{client_base_url}/verify/"
+        secret_key = current_app.config["SECRET_KEY"]
+        password_salt = current_app.config["VERIFICATION_SALT"]
+        sender = current_app.config["MAIL_DEFAULT_SENDER"]
+        template = "user/verify.html"
+        subject = "Please confirm your email"
+
+        if errors:
+            return dict(status="fail", message=errors), 400
+
+        # send verification
+        send_verification(
+            email,
+            user.name,
+            verification_url,
+            secret_key,
+            password_salt,
+            sender,
+            current_app._get_current_object(),
+            template,
+            subject
+        )
+
 
         new_user_data, errors = user_schema.dumps(user)
 
@@ -301,3 +335,168 @@ class ClinicianView(Resource):
         new_user_data, errors = user_schema.dumps(user)
 
         return dict(status='success', data=dict(user=json.loads(new_user_data))), 201
+    
+class UserEmailVerificationView(Resource):
+
+    def get(self, token):
+        """
+        """
+
+        user_schema = UserSchema()
+
+        secret = current_app.config["SECRET_KEY"]
+        salt = current_app.config["VERIFICATION_SALT"]
+
+        email = validate_token(token, secret, salt)
+
+        if not email:
+            return dict(status="fail", message="invalid token"), 401
+
+        user = User.find_first(**{'email': email})
+
+        if not user:
+            return dict(
+                status='fail',
+                message=f'User with email {email} not found'
+            ), 404
+
+        if user.verified:
+            return dict(
+                status='fail', message='Email is already verified'), 400
+
+        user.verified = True
+
+        user_saved = user.save()
+
+        user_dict, _ = user_schema.dump(user)
+
+        if user_saved:
+
+            # generate access token
+            access_token = user.generate_token(user_dict)
+
+            if not access_token:
+                return dict(
+                    status='fail', message='Internal Server Error'), 500
+
+            return dict(
+                status='success',
+                message='Email verified successfully',
+                data=dict(
+                    access_token=access_token,
+                    email=user.email,
+                    username=user.username,
+                    verified=user.verified,
+                    id=str(user.id),
+                )), 200
+
+        return dict(status='fail', message='Internal Server Error'), 500
+
+
+class EmailVerificationRequest(Resource):
+
+    def post(self):
+        """
+        """
+        email_schema = UserSchema(only=("email",))
+
+        request_data = request.get_json()
+
+        validated_data, errors = email_schema.load(request_data)
+
+        if errors:
+            return dict(status='fail', message=errors), 400
+
+        email = validated_data.get('email', None)
+        client_base_url = os.getenv(
+            'CLIENT_BASE_URL',
+            'https://smartapp.aceuganda.org/users'
+        )
+
+        # To do, change to a frontend url
+        verification_url = f"{client_base_url}/verify/"
+        secret_key = current_app.config["SECRET_KEY"]
+        password_salt = current_app.config["VERIFICATION_SALT"]
+        sender = current_app.config["MAIL_DEFAULT_SENDER"]
+        template = "user/verify.html"
+        subject = "Please confirm your email"
+
+        user = User.find_first(**{'email': email})
+
+        if not user:
+            return dict(
+                status='fail',
+                message=f'User with email {email} not found'
+            ), 404
+
+        # send verification
+        send_verification(
+            email,
+            user.name,
+            verification_url,
+            secret_key,
+            password_salt,
+            sender,
+            current_app._get_current_object(),
+            template,
+            subject
+        )
+
+        return dict(
+            status='success',
+            message=f'Verification link sent to {email}'
+        ), 200
+
+
+class ForgotPasswordView(Resource):
+
+    def post(self):
+        """
+        """
+
+        email_schema = UserSchema(only=("email",))
+
+        request_data = request.get_json()
+        validated_data, errors = email_schema.load(request_data)
+
+        if errors:
+            return dict(status='fail', message=errors), 400
+
+        email = validated_data.get('email', None)
+        client_base_url = os.getenv(
+            'CLIENT_BASE_URL',
+            'https://smartapp.aceuganda.org/users'
+        )
+
+        verification_url = f"{client_base_url}/reset_password/"
+        secret_key = current_app.config["SECRET_KEY"]
+        password_salt = current_app.config["PASSWORD_SALT"]
+        sender = current_app.config["MAIL_DEFAULT_SENDER"]
+        template = "user/reset.html"
+        subject = "Password reset"
+
+        user = User.find_first(**{'email': email})
+
+        if not user:
+            return dict(
+                status='fail',
+                message=f'User with email {email} not found'
+            ), 404
+
+        # send password reset link
+        send_verification(
+            email,
+            user.name,
+            verification_url,
+            secret_key,
+            password_salt,
+            sender,
+            current_app._get_current_object(),
+            template,
+            subject
+        )
+
+        return dict(
+            status='success',
+            message=f'Password reset link sent to {email}'
+        ), 200
