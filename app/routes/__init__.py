@@ -1,8 +1,8 @@
 from flask_restful import Api
 from app.controllers import (
-    IndexView, UserView, UserDetailView, UserLoginView, ResetPassword, SiezureView, SeizureDetailView, SeizureOverview, SeizureDetailOverview, SeizureUserMetrics, MedicationView, MedicationDetailView, MedicationOverview, MedicationMissedReasons, MedicationDetailOverview, MedicineView, MedicineDetailView
+    IndexView, UserView, UserDetailView, UserLoginView, ResetPasswordView, SiezureView, SeizureDetailView, SeizureOverview, SeizureDetailOverview, SeizureUserMetrics, MedicationView, MedicationDetailView, MedicationOverview, MedicationMissedReasons, MedicationDetailOverview, MedicineView, MedicineDetailView
     , ResilienceView, ResilienceDetailView, RolesView, RolesDetailView, UserRolesView, ClinicianView, ResilienceFeelingsOverview, ResilienceFeelingsDetailedOverview, ResilienceSocialEngagementDetailedOverview, ResilienceTreatmentScaleDetailedOverview, ResilienceUserFeelings, ResilienceUserSocialEngagementActivities, GratefulsView, GratefulsDetailView, JournalsView, 
-    JournalsDetailView, UserEmailVerificationView, UserEmailVerificationView, ForgotPasswordView)
+    JournalsDetailView, UserEmailVerificationView, UserEmailVerificationView, EmailVerificationRequest, ForgotPasswordView)
 
 
 api = Api()
@@ -16,7 +16,7 @@ api.add_resource(UserDetailView, '/users/<string:user_id>',
                  endpoint='user')
 api.add_resource(UserDetailView, '/users/<string:user_id>/change_password')
 api.add_resource(UserLoginView, '/users/login', endpoint='user_login')
-api.add_resource(ResetPassword, '/users/reset_password/<string:token>',
+api.add_resource(ResetPasswordView, '/users/reset_password/<string:token>',
                  endpoint='reset_password')
 api.add_resource(ForgotPasswordView, '/users/forgot_password')
 api.add_resource(ClinicianView, '/users/register_clinician', endpoint='clinicians')
