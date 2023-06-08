@@ -56,7 +56,7 @@ class UserView(Resource):
         secret_key = current_app.config["SECRET_KEY"]
         password_salt = current_app.config["VERIFICATION_SALT"]
         sender = current_app.config["MAIL_DEFAULT_SENDER"]
-        template = "user/verify.html"
+        template = "verify.html"
         subject = "Please confirm your email"
 
         if errors:
@@ -65,7 +65,7 @@ class UserView(Resource):
         # send verification
         send_verification(
             email,
-            user.name,
+            user.username,
             verification_url,
             secret_key,
             password_salt,
@@ -431,7 +431,7 @@ class EmailVerificationRequest(Resource):
         secret_key = current_app.config["SECRET_KEY"]
         password_salt = current_app.config["VERIFICATION_SALT"]
         sender = current_app.config["MAIL_DEFAULT_SENDER"]
-        template = "user/verify.html"
+        template = "verify.html"
         subject = "Please confirm your email"
 
         user = User.find_first(**{'email': email})
@@ -445,7 +445,7 @@ class EmailVerificationRequest(Resource):
         # send verification
         send_verification(
             email,
-            user.name,
+            user.username,
             verification_url,
             secret_key,
             password_salt,
@@ -485,7 +485,7 @@ class ForgotPasswordView(Resource):
         secret_key = current_app.config["SECRET_KEY"]
         password_salt = current_app.config["PASSWORD_SALT"]
         sender = current_app.config["MAIL_DEFAULT_SENDER"]
-        template = "user/reset.html"
+        template = "reset.html"
         subject = "Password reset"
 
         user = User.find_first(**{'email': email})
@@ -499,7 +499,7 @@ class ForgotPasswordView(Resource):
         # send password reset link
         send_verification(
             email,
-            user.name,
+            user.username,
             verification_url,
             secret_key,
             password_salt,
