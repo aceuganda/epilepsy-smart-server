@@ -29,6 +29,7 @@ class User(RootModel):
     date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
     seizures = db.relationship('Seizure', backref='user', lazy=True)
     medicines =db.relationship('Medicine', backref='user', lazy=True)
+    verified = db.Column(db.Boolean, nullable=True, default=False)
     dob = db.Column(db.String, nullable=True)
     journals = db.relationship('Journal', backref='user', lazy=True)
     gratefuls = db.relationship('Grateful', backref='user', lazy=True)

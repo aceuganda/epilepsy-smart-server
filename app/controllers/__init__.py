@@ -1,5 +1,5 @@
 from .index import IndexView
-from .user import (UserView, UserDetailView, UserLoginView, ResetPassword, ClinicianView)
+from .user import (UserView, UserDetailView, UserLoginView, ResetPasswordView, ClinicianView, ForgotPasswordView, UserEmailVerificationView, EmailVerificationRequest)
 from .seizure import (SiezureView, SeizureDetailView, SeizureOverview, SeizureDetailOverview, SeizureUserMetrics)
 from .medicine import(MedicineDetailView, MedicineView)
 from .medication import(MedicationDetailView, MedicationView, MedicationOverview, MedicationDetailOverview, MedicationMissedReasons)

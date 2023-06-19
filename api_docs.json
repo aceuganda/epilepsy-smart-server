@@ -212,6 +212,97 @@
           }
         }
       },
+      "/users/verify": {
+        "post": {
+          "tags": ["users"],
+          "summary": "Verify User",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "User email",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/user_email"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully Verified User"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
+      "/users/verify/{token}": {
+        "get": {
+          "tags": ["users"],
+          "summary": "Gets user tokken",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "token",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "404": {
+              "description": "Resource not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
+      "/users/reset_password/{token}": {
+        "post": {
+          "tags": ["users"],
+          "summary": "Reset User password",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "token",
+              "required": true
+            },
+            {
+              "in": "body",
+              "name": "User password",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/user_password"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            },
+            "401": {
+              "description": "invalid input, object invalid"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
       "/users/reset_password": {
         "post": {
           "tags": ["users"],
@@ -1858,6 +1949,26 @@
             "type": "string",
             "example": "user@email.com"
           },
+          "password": {
+            "type": "string",
+            "example": "password"
+          }
+        }
+      },
+      "user_email": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@email.com"
+          }
+        }
+      },
+      "user_password": {
+        "type": "object",
+        "required": ["password"],
+        "properties": {
           "password": {
             "type": "string",
             "example": "password"
