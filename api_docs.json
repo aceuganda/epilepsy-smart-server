@@ -303,25 +303,25 @@
           }
         }
       },
-      "/users/reset_password": {
+      "/users/forgot_password": {
         "post": {
           "tags": ["users"],
-          "summary": "Reset User Password",
+          "summary": "Forgot Password",
           "consumes": ["application/json"],
           "produces": ["application/json"],
           "parameters": [
             {
               "in": "body",
-              "name": "User params",
+              "name": "User email",
               "required": true,
               "schema": {
-                "$ref": "#/definitions/user_login_credentials"
+                "$ref": "#/definitions/user_email"
               }
             }
           ],
           "responses": {
-            "201": {
-              "description": "Successfully Logged In User"
+            "200": {
+              "description": "Successfully sent reset password token"
             },
             "401": {
               "description": "invalid input, object invalid"
