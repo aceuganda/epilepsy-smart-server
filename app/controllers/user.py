@@ -48,7 +48,7 @@ class UserView(Resource):
         email = validated_user_data.get('email', None)
         client_base_url = os.getenv(
             'CLIENT_BASE_URL',
-            'https://smartapp.aceuganda.org/users'
+            'https://smartapp.aceuganda.org/'
         )
 
         # To do change to a frontend url
@@ -423,11 +423,11 @@ class EmailVerificationRequest(Resource):
         email = validated_data.get('email', None)
         client_base_url = os.getenv(
             'CLIENT_BASE_URL',
-            'https://smartapp.aceuganda.org/users'
+            'https://smartapp.aceuganda.org/'
         )
 
         # To do, change to a frontend url
-        verification_url = f"{client_base_url}/verify/"
+        verification_url = f"{client_base_url}/account/verify/"
         secret_key = current_app.config["SECRET_KEY"]
         password_salt = current_app.config["VERIFICATION_SALT"]
         sender = current_app.config["MAIL_DEFAULT_SENDER"]
@@ -478,10 +478,10 @@ class ForgotPasswordView(Resource):
         email = validated_data.get('email', None)
         client_base_url = os.getenv(
             'CLIENT_BASE_URL',
-            'https://smartapp.aceuganda.org/users'
+            'https://smartapp.aceuganda.org/'
         )
 
-        verification_url = f"{client_base_url}/reset_password/"
+        verification_url = f"{client_base_url}/reset-password/"
         secret_key = current_app.config["SECRET_KEY"]
         password_salt = current_app.config["PASSWORD_SALT"]
         sender = current_app.config["MAIL_DEFAULT_SENDER"]
