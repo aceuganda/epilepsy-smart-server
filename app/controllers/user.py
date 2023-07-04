@@ -48,7 +48,7 @@ class UserView(Resource):
         email = validated_user_data.get('email', None)
         client_base_url = os.getenv(
             'CLIENT_BASE_URL',
-            'https://smartapp.aceuganda.org/'
+            'https://smartapp.aceuganda.org'
         )
 
         # To do change to a frontend url
@@ -423,7 +423,7 @@ class EmailVerificationRequest(Resource):
         email = validated_data.get('email', None)
         client_base_url = os.getenv(
             'CLIENT_BASE_URL',
-            'https://smartapp.aceuganda.org/'
+            'https://smartapp.aceuganda.org'
         )
 
         # To do, change to a frontend url
@@ -478,7 +478,7 @@ class ForgotPasswordView(Resource):
         email = validated_data.get('email', None)
         client_base_url = os.getenv(
             'CLIENT_BASE_URL',
-            'https://smartapp.aceuganda.org/'
+            'https://smartapp.aceuganda.org'
         )
 
         verification_url = f"{client_base_url}/reset-password/"
