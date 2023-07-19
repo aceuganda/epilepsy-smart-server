@@ -248,6 +248,7 @@ class UserLoginView(Resource):
                     access_token=access_token,
                     email=user.email,
                     username=user.username,
+                    verified=user.verified,
                     id=str(user.id),
                 )), 200
 
