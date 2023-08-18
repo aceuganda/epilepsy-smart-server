@@ -255,6 +255,8 @@ class SeizureOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             day = calendar.day_name[dt.weekday()].lower()
             severity = d["seizure_severity"]
+            if severity != "mild" and severity != "moderate" and severity != "severe": 
+                continue
             weekly_severity[day][severity] +=1
         
         overview.append(dict(weekly_severity=weekly_severity))
@@ -275,6 +277,8 @@ class SeizureOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             week = "week" + week_of_month(dt)
             severity = d["seizure_severity"]
+            if severity != "mild" and severity != "moderate" and severity != "severe": 
+                continue
             monthly_severity[week][severity] +=1
         
         overview.append(dict(monthly_severity=monthly_severity))
@@ -292,6 +296,8 @@ class SeizureOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             month = calendar.month_name[dt.month].lower()
             severity = d["seizure_severity"]
+            if severity != "mild" and severity != "moderate" and severity != "severe": 
+                continue
             yearly_severity[month][severity] +=1
         
         overview.append(dict(yearly_severity=yearly_severity))
@@ -477,6 +483,8 @@ class SeizureDetailOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             day = calendar.day_name[dt.weekday()].lower()
             severity = d["seizure_severity"]
+            if severity != "mild" and severity != "moderate" and severity != "severe": 
+                continue
             weekly_severity[day][severity] +=1
         
         overview.append(dict(weekly_severity=weekly_severity))
@@ -498,6 +506,8 @@ class SeizureDetailOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             week = "week" + week_of_month(dt)
             severity = d["seizure_severity"]
+            if severity != "mild" and severity != "moderate" and severity != "severe": 
+                continue
             monthly_severity[week][severity] +=1
         
         overview.append(dict(monthly_severity=monthly_severity))
@@ -515,6 +525,8 @@ class SeizureDetailOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             month = calendar.month_name[dt.month].lower()
             severity = d["seizure_severity"]
+            if severity != "mild" and severity != "moderate" and severity != "severe": 
+                continue
             yearly_severity[month][severity] +=1
         
         overview.append(dict(yearly_severity=yearly_severity))

@@ -453,6 +453,8 @@ class ResilienceFeelingsOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             day = calendar.day_name[dt.weekday()].lower()
             feelings_count = d["type_of_feelings"].lower()
+            if feelings_count != "positive" and feelings_count != "negative": 
+                continue
             weekly_feelings_count[day][feelings_count] +=1
         
         overview.append(dict(weekly_feelings_count=weekly_feelings_count))
@@ -474,6 +476,8 @@ class ResilienceFeelingsOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             week = "week" + week_of_month(dt)
             feelings_count = d["type_of_feelings"].lower()
+            if feelings_count != "positive" and feelings_count != "negative": 
+                continue
             monthly_feelings_count[week][feelings_count] +=1
         
         overview.append(dict(monthly_feelings_count=monthly_feelings_count))
@@ -491,6 +495,8 @@ class ResilienceFeelingsOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             month = calendar.month_name[dt.month].lower()
             feelings_count = d["type_of_feelings"].lower()
+            if feelings_count != "positive" and feelings_count != "negative": 
+                continue
             yearly_feelings_count[month][feelings_count] +=1
         
         overview.append(dict(yearly_feelings_count=yearly_feelings_count))
@@ -653,6 +659,8 @@ class ResilienceFeelingsDetailedOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             day = calendar.day_name[dt.weekday()].lower()
             feelings_count = d["type_of_feelings"].lower()
+            if feelings_count != "positive" and feelings_count != "negative": 
+                continue
             weekly_feelings_count[day][feelings_count] +=1
         
         overview.append(dict(weekly_feelings_count=weekly_feelings_count))
@@ -674,6 +682,8 @@ class ResilienceFeelingsDetailedOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             week = "week" + week_of_month(dt)
             feelings_count = d["type_of_feelings"].lower()
+            if feelings_count != "positive" and feelings_count != "negative": 
+                continue
             monthly_feelings_count[week][feelings_count] +=1
         
         overview.append(dict(monthly_feelings_count=monthly_feelings_count))
@@ -691,6 +701,8 @@ class ResilienceFeelingsDetailedOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             month = calendar.month_name[dt.month].lower()
             feelings_count = d["type_of_feelings"].lower()
+            if feelings_count != "positive" and feelings_count != "negative": 
+                continue
             yearly_feelings_count[month][feelings_count] +=1
         
         overview.append(dict(yearly_feelings_count=yearly_feelings_count))

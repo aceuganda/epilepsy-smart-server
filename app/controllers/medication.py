@@ -291,6 +291,8 @@ class MedicationOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             day = calendar.day_name[dt.weekday()].lower()
             took_medicine = data["took_medicine"]
+            if took_medicine != "all doses" and took_medicine != "some doses" and took_medicine != "no doses": 
+                continue
             weekly_medications[day][took_medicine] += 1
         
         overview.append(dict(weekly_medications=weekly_medications))
@@ -313,6 +315,8 @@ class MedicationOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             week = "week" + week_of_month(dt)
             took_medicine = data["took_medicine"]
+            if took_medicine != "all doses" and took_medicine != "some doses" and took_medicine != "no doses": 
+                continue
             monthly_medications[week][took_medicine] += 1
         
         overview.append(dict(monthly_medications=monthly_medications))
@@ -330,11 +334,13 @@ class MedicationOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             month = calendar.month_name[dt.month].lower()
             took_medicine = data["took_medicine"]
+            if took_medicine != "all doses" and took_medicine != "some doses" and took_medicine != "no doses": 
+                continue
             yearly_medications[month][took_medicine] += 1
         
         overview.append(dict(yearly_medications=yearly_medications))
 
-        if monthly_errors:
+        if yearly_errors:
             return dict(status="fail", message=monthly_errors), 500
 
         return dict(status='success', data=dict(overview=overview))
@@ -515,6 +521,8 @@ class MedicationDetailOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             day = calendar.day_name[dt.weekday()].lower()
             took_medicine = data["took_medicine"]
+            if took_medicine != "all doses" and took_medicine != "some doses" and took_medicine != "no doses": 
+                continue
             weekly_medications[day][took_medicine] += 1
         
         overview.append(dict(weekly_medications=weekly_medications))
@@ -536,6 +544,8 @@ class MedicationDetailOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             week = "week" + week_of_month(dt)
             took_medicine = data["took_medicine"]
+            if took_medicine != "all doses" and took_medicine != "some doses" and took_medicine != "no doses": 
+                continue
             monthly_medications[week][took_medicine] += 1
         
         overview.append(dict(monthly_medications=monthly_medications))
@@ -553,6 +563,8 @@ class MedicationDetailOverview(Resource):
             dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%f")
             month = calendar.month_name[dt.month].lower()
             took_medicine = data["took_medicine"]
+            if took_medicine != "all doses" and took_medicine != "some doses" and took_medicine != "no doses": 
+                continue
             yearly_medications[month][took_medicine] += 1
         
         overview.append(dict(yearly_medications=yearly_medications))
