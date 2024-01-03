@@ -155,7 +155,7 @@ class UserDetailView(Resource):
         return dict(status="success", message="User updated successfully"), 200
 
     @jwt_required
-    def patch(self, user_id):
+    def put(self, user_id):
         """
         Change a single users password
         """
