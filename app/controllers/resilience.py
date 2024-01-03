@@ -50,18 +50,18 @@ class ResilienceView(Resource):
 
         # get record with latest timestamp
         latest_time = Resilience.query.filter_by(user_id=user_id).order_by(sqlalchemy.desc(Resilience.timestamp)).first()
+        if not latest_time:
+            return dict(
+                status='fail',
+                message="No resilience data found"
+            ), 404
         time_data, errors= resilience_schema2.dumps(latest_time)
-        print("...............................................................................")
-        print(time_data)
         time_list = json.loads(time_data)
         last_entry_time = time_list["timestamp"]
         datetimeObj = datetime.strptime(last_entry_time, '%Y-%m-%dT%H:%M:%S.%f')
-        print(datetimeObj)
         
         filter_after = datetimeObj - timedelta(days = 3)
-        print(filter_after)
         resiliences = Resilience.query.filter(Resilience.timestamp>=filter_after, Resilience.user_id==user_id).all()  
-        print(resiliences) 
         if not resiliences:
             return dict(
                 status='fail',
@@ -69,14 +69,12 @@ class ResilienceView(Resource):
             ), 404
 
         resiliences_data, errors = resilience_schema.dumps(resiliences)
-        print(resiliences_data)
         if not resiliences_data:
             return dict(status="fail", message="Resilience data not found"), 404
 
         
         resiliences_data_list = []
         new_resiliences_data_list = json.loads(resiliences_data)
-        print(resiliences_data_list)
 
         #count social engagement activities for 3 days
         total =0
