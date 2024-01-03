@@ -123,7 +123,7 @@
               "name": "User params",
               "required": false,
               "schema": {
-                "$ref": "#/definitions/user"
+                "$ref": "#/definitions/user_update_credentials"
               }
             }
           ],
@@ -144,7 +144,7 @@
         }
       },
       "/users/{user_id}/change_password": {
-        "patch": {
+        "put": {
           "tags": ["users"],
           "summary": "Change User Password",
           "consumes": ["application/json"],
@@ -1989,7 +1989,7 @@
           }
         }
       },
-      "user": {
+      "user_update_credentials": {
         "type": "object",
         "properties": {
           "username": {
