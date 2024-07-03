@@ -1893,7 +1893,7 @@
     "definitions": {
       "user_signup_credentials": {
         "type": "object",
-        "required": ["username", "password", "email", "dob", "gender", "age_of_onset", "seizure_type", "caregiver_name", "caregiver_contact", "institution", "profileImage"],
+        "required": ["username", "password", "email", "dob", "gender", "age_of_onset", "seizure_type", "institution", "profileImage"],
         "properties": {
           "username": {
             "type": "string",

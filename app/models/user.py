@@ -34,7 +34,7 @@ class User(RootModel):
     journals = db.relationship('Journal', backref='user', lazy=True)
     gratefuls = db.relationship('Grateful', backref='user', lazy=True)
 
-    def __init__(self, username, email, gender, age_of_onset, seizure_type, caregiver_name, caregiver_contact, institution, profileImage, password, dob):
+    def __init__(self, username, email, gender, age_of_onset, seizure_type, institution, profileImage, password, dob, caregiver_name=None, caregiver_contact=None,):
         """ initialize with email, age, gender, age_of_onset, seizure_type, caregiver_name, caregiver_contact, institution, profileImage, username and password """
         self.email = email
         self.username = username
