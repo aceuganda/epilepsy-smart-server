@@ -287,9 +287,11 @@ class ResetPasswordView(Resource):
                 message=f'user with email {email} not found'
             ), 404
 
-        if not user.verified:
-            return dict(
-                status='fail', message=f'email {email} is not verified'), 400
+        # commented out so that users can reset passwords without verified emails
+        # if not user.verified:
+        #     return dict(
+        #         status='fail', message=f'email {email} is not verified'), 400
+        
         user.password = hashed_password
 
         user_saved = user.save()
